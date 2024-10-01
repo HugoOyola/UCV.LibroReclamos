@@ -1,20 +1,28 @@
-import {Component, HostListener, effect, inject} from '@angular/core';
-import {MainService} from './services/main.service';
-import {AuthService} from '@auth/auth.service';
-import {SkeletonComponent} from '@shared/components/skeleon/skeleton.component';
-import {MatIconModule} from '@angular/material/icon';
-import {MatButtonModule} from '@angular/material/button';
-import {CommonModule} from '@angular/common';
-import {PerfilesSharedService} from '@shared/services/perfiles-shared.service';
-import {EncryptionService} from '@auth/encryption.service';
-import {DatosBasicosComponent} from './components/datos-basicos/datos-basicos.component';
-import {MainSharedService} from '@shared/services/main-shared.service';
-import {ModuleService} from '@shared/services/module.service';
+import { Component, HostListener, effect, inject } from '@angular/core';
+import { MainService } from './services/main.service';
+import { AuthService } from '@auth/auth.service';
+import { SkeletonComponent } from '@shared/components/skeleon/skeleton.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
+import { PerfilesSharedService } from '@shared/services/perfiles-shared.service';
+import { EncryptionService } from '@auth/encryption.service';
+import { DatosBasicosComponent } from './components/datos-basicos/datos-basicos.component';
+import { MainSharedService } from '@shared/services/main-shared.service';
+import { ModuleService } from '@shared/services/module.service';
+import { LibroReclamosComponent } from './components/libro-reclamos/libro-reclamos.component';
 
 @Component({
 	selector: 'app-main',
 	standalone: true,
-	imports: [CommonModule, SkeletonComponent, MatIconModule, MatButtonModule, DatosBasicosComponent],
+	imports: [
+		CommonModule,
+		SkeletonComponent,
+		MatIconModule,
+		MatButtonModule,
+		DatosBasicosComponent,
+		LibroReclamosComponent,
+	],
 	providers: [MainService],
 	templateUrl: './main.component.html',
 	styleUrl: './main.component.scss',
@@ -61,14 +69,20 @@ export class MainComponent {
 
 	post_Principal_ObtenerDatosPersonales(): void {
 		if (this._mainSharedService.datosPersonales() === null) {
-			this._mainService.post_Principal_ObtenerDatosPersonales(this._mainSharedService.cPerCodigo()).subscribe({
-				next: (v) => {
-					console.log('v =>', v);
-					this._mainSharedService.datosPersonales.set(v.body?.lstItem[0] ?? null);
-				},
-				error: (e) => {},
-				complete: () => {},
-			});
+			this._mainService
+				.post_Principal_ObtenerDatosPersonales(
+					this._mainSharedService.cPerCodigo(),
+				)
+				.subscribe({
+					next: (v) => {
+						console.log('v =>', v);
+						this._mainSharedService.datosPersonales.set(
+							v.body?.lstItem[0] ?? null,
+						);
+					},
+					error: (e) => {},
+					complete: () => {},
+				});
 		}
 	}
 }
