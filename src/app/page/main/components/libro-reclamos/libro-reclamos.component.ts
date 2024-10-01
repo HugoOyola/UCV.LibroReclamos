@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
+import { ListReclamosComponent } from './list-reclamos/list-reclamos.component';
 
 const MATERIAL_MODULES = [
 	MatFormFieldModule,
@@ -26,7 +27,13 @@ const MATERIAL_MODULES = [
 @Component({
 	selector: 'app-libro-reclamo',
 	standalone: true,
-	imports: [MATERIAL_MODULES, FormsModule, ReactiveFormsModule, CommonModule],
+	imports: [
+		MATERIAL_MODULES,
+		FormsModule,
+		ReactiveFormsModule,
+		CommonModule,
+		ListReclamosComponent,
+	],
 	templateUrl: './libro-reclamos.component.html',
 	styleUrls: ['./libro-reclamos.component.scss'],
 })
@@ -53,7 +60,7 @@ export class LibroReclamosComponent {
 		{ id: '1000098770', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - TRUJILLO' },
 	];
 
-	public tiposReclamo = ['Reclamo', 'Queja', 'Consulta', 'Sugerencia'];
+	public tiposReclamo = ['Todos', 'Reclamo', 'Queja', 'Consulta / Sugerencia'];
 	public estados = [
 		'Pendiente',
 		'En Proceso',
