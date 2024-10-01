@@ -1,0 +1,11 @@
+@media (max-width: 768px) {
+	.mobile-grid {
+		display: grid;
+	}
+	.mobile-grid-cols-2 {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.mobile-gap-4 {
+		gap: 0.15rem;
+	}
+}

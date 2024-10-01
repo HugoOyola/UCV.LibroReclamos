@@ -45,7 +45,7 @@
 	<div class="space-y-2 mb-4">
 		<label class="font-bold">Tipo de Reclamo:</label>
 		<mat-radio-group [(ngModel)]="tipoReclamo">
-			<div>
+			<div class="mobile-grid mobile-grid-cols-2 mobile-gap-4">
 				<mat-radio-button
 					*ngFor="let tipo of tiposReclamo"
 					[value]="tipo"
