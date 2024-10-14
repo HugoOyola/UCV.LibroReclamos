@@ -1,112 +1,93 @@
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
-import { MatTableModule } from '@angular/material/table'; // Importa MatTableModule
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
+import { CommonModule } from '@angular/common';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ModalContentComponent } from './modal/modal.component';
+
+// Interfaz Reclamo para tipar los datos correctamente
+export interface Reclamo {
+	codReclamo: number;
+	usuario: string;
+	usuarioReclamante: string;
+	dni: string;
+	fechaRegistro: string;
+	correo: string;
+	filial: string;
+}
 
 @Component({
-	selector: 'app-list-reclamos',
+	selector: 'app-control-reclamos',
 	standalone: true,
 	imports: [
 		CommonModule,
 		MatTableModule,
-		FormsModule,
-		MatInputModule,
-		MatSelectModule,
-	], // Asegúrate de incluir FormsModule
-	templateUrl: './list-reclamos.component.html',
-	styleUrls: ['./list-reclamos.component.scss'],
+		MatPaginatorModule,
+		MatButtonModule,
+		MatIconModule,
+		MatDialogModule,
+		ModalContentComponent,
+	],
+	templateUrl: './listado-reclamos.component.html',
+	styleUrls: ['./listado-reclamos.component.scss'],
 })
-export class ListReclamosComponent {
+export class ListadoReclamosComponent implements AfterViewInit {
+	// Aquí tipamos explícitamente la fuente de datos con Reclamo[]
+	public dataSource = new MatTableDataSource<Reclamo>(RECLAMOS_DATA);
+	// Columnas a mostrar en la tabla
 	public displayedColumns: string[] = [
-		'cod',
-		'datos',
-		'detalle',
+		'codReclamo',
+		'usuario',
+		'usuarioReclamante',
+		'dni',
+		'fechaRegistro',
+		'correo',
+		'filial',
+		'arch',
+		'tipo',
+		'reenviar',
+		'modelo',
 		'accion',
-		'estado',
-		'apoyoCiu',
 	];
 
-	public dataSource = new MatTableDataSource<ReclamoElement>([]);
+	@ViewChild(MatPaginator) public paginator!: MatPaginator;
 
-	public campuses = [
-		'UCV FILIAL CALLAO',
-		'UCV FILIAL LIMA',
-		'UCV FILIAL AREQUIPA',
-	];
-	public areas = ['ADMINISTRACIÓN DE EMPRESAS', 'INGENIERÍA', 'COMUNICACIÓN'];
-	public estados = [
-		'Pendiente',
-		'En Proceso',
-		'Enviado Imagen',
-		'Atendido',
-		'Conforme',
-		'Vencido',
-		'Inválido',
-		'No-Conforme',
-	];
-
-	constructor() {
-		this.loadData();
+	ngAfterViewInit(): void {
+		this.dataSource.paginator = this.paginator;
 	}
 
-	loadData(): void {
-		const reclamoData: ReclamoElement = {
-			cod: 19926,
-			datos: {
-				campus: 'UCV FILIAL CALLAO',
-				nombre: 'Moscoso Lopez Miluska Desire Brigith',
-				dni: '70945073',
-				telefono: '992798467',
-				email: 'mdbmlopez17@hotmail.com',
-				categoria: 'Atención',
-			},
-			detalle: 'Descripción completa del reclamo...',
-			accion: {
-				area: 'ADMINISTRACIÓN DE EMPRESAS',
-				fechaRegistro: new Date('2024-09-06T15:36:46'),
-				respuesta: 'Breve respuesta de la acción...',
-			},
-			estado: 'Conforme',
-			apoyoCiu: false,
-			fecha: new Date('2024-09-03T14:47:22'),
-		};
-
-		this.dataSource.data = [reclamoData];
+	openModal(element: Reclamo): void {
+		this.dialog.open(ModalContentComponent, {
+			data: element, // Aquí pasamos el elemento tipado como Reclamo
+		});
 	}
 
-	getRowColor(date: Date): string {
-		const currentDate = new Date(2024, 9, 1);
-		const fourDaysBefore = new Date(2024, 8, 27);
-
-		if (date >= fourDaysBefore && date < currentDate) {
-			return 'bg-orange-200';
-		} else if (date >= currentDate) {
-			return 'bg-red-200';
-		}
-		return '';
-	}
+	constructor(public dialog: MatDialog) {}
 }
 
-export interface ReclamoElement {
-	cod: number;
-	datos: {
-		campus: string;
-		nombre: string;
-		dni: string;
-		telefono: string;
-		email: string;
-		categoria: string;
-	};
-	detalle: string;
-	accion: {
-		area: string;
-		fechaRegistro: Date;
-		respuesta: string;
-	};
-	estado: string;
-	apoyoCiu: boolean;
-	fecha: Date;
-}
+const RECLAMOS_DATA: Reclamo[] = [
+	{
+		codReclamo: 20162,
+		usuario: 'Alumno',
+		usuarioReclamante: 'HOROSETIGL LANOS JOSELIN LUZ',
+		dni: '77330987',
+		fechaRegistro: '01/10/2024 10:25:57 PM',
+		correo: 'joselin.lanos@gmail.com',
+		filial: 'HUARAZ',
+	},
+	{
+		codReclamo: 20161,
+		usuario: 'Alumno',
+		usuarioReclamante: 'VASQUEZ CALLE JACKELINE',
+		dni: '74964740',
+		fechaRegistro: '01/10/2024 8:15:21 PM',
+		correo: 'jvasquez0106@gmail.com',
+		filial: 'LIMA ESTE',
+	},
+	// Más datos aquí...
+];

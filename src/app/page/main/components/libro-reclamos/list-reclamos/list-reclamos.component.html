@@ -1,109 +1,102 @@
-<div class="w-full">
-	<table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full">
-		<!-- COD -->
-		<ng-container matColumnDef="cod">
-			<th mat-header-cell *matHeaderCellDef>COD.</th>
-			<td
-				mat-cell
-				*matCellDef="let element"
-				[ngClass]="getRowColor(element.fecha)"
-			>
-				{{ element.cod }}
+<div class="table-container">
+	<table mat-table [dataSource]="dataSource">
+		<!-- Cod Reclamo -->
+		<ng-container matColumnDef="codReclamo">
+			<th mat-header-cell *matHeaderCellDef>Cod. Reclamo</th>
+			<td mat-cell *matCellDef="let element">{{ element.codReclamo }}</td>
+		</ng-container>
+
+		<!-- Usuario -->
+		<ng-container matColumnDef="usuario">
+			<th mat-header-cell *matHeaderCellDef>Usuario</th>
+			<td mat-cell *matCellDef="let element">{{ element.usuario }}</td>
+		</ng-container>
+
+		<!-- Usuario Reclamante -->
+		<ng-container matColumnDef="usuarioReclamante">
+			<th mat-header-cell *matHeaderCellDef>Usuario Reclamante</th>
+			<td mat-cell *matCellDef="let element">
+				{{ element.usuarioReclamante }}
 			</td>
 		</ng-container>
 
-		<!-- DATOS -->
-		<ng-container matColumnDef="datos">
-			<th mat-header-cell *matHeaderCellDef>DATOS</th>
-			<td
-				mat-cell
-				*matCellDef="let element"
-				[ngClass]="getRowColor(element.fecha)"
-			>
-				<mat-form-field appearance="fill">
-					<mat-label>Seleccionar Campus</mat-label>
-					<mat-select [(value)]="element.datos.campus">
-						<mat-option *ngFor="let campus of campuses" [value]="campus">{{
-							campus
-						}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<div>{{ element.datos.nombre }}</div>
-				<div>DNI: {{ element.datos.dni }}</div>
-				<div>Teléfono: {{ element.datos.telefono }}</div>
-				<div>Email: {{ element.datos.email }}</div>
-				<div>Categoría: {{ element.datos.categoria }}</div>
+		<!-- DNI -->
+		<ng-container matColumnDef="dni">
+			<th mat-header-cell *matHeaderCellDef>DNI</th>
+			<td mat-cell *matCellDef="let element">{{ element.dni }}</td>
+		</ng-container>
+
+		<!-- Fecha Registro -->
+		<ng-container matColumnDef="fechaRegistro">
+			<th mat-header-cell *matHeaderCellDef>Fecha Registro</th>
+			<td mat-cell *matCellDef="let element">
+				{{ element.fechaRegistro }}
 			</td>
 		</ng-container>
 
-		<!-- DETALLE -->
-		<ng-container matColumnDef="detalle">
-			<th mat-header-cell *matHeaderCellDef>DETALLE</th>
-			<td
-				mat-cell
-				*matCellDef="let element"
-				[ngClass]="getRowColor(element.fecha)"
-			>
-				<mat-form-field appearance="fill">
-					<mat-label>Detalles del Servicio</mat-label>
-					<textarea matInput [(ngModel)]="element.detalle"></textarea>
-				</mat-form-field>
+		<!-- Correo -->
+		<ng-container matColumnDef="correo">
+			<th mat-header-cell *matHeaderCellDef>Correo</th>
+			<td mat-cell *matCellDef="let element">{{ element.correo }}</td>
+		</ng-container>
+
+		<!-- Filial -->
+		<ng-container matColumnDef="filial">
+			<th mat-header-cell *matHeaderCellDef>Filial</th>
+			<td mat-cell *matCellDef="let element">{{ element.filial }}</td>
+		</ng-container>
+
+		<!-- Arch -->
+		<ng-container matColumnDef="arch">
+			<th mat-header-cell *matHeaderCellDef>Arch.</th>
+			<td mat-cell *matCellDef="let element">
+				<mat-icon class="material-icons-round">attach_file</mat-icon>
 			</td>
 		</ng-container>
 
-		<!-- ACCION -->
+		<!-- Detalle -->
+		<ng-container matColumnDef="tipo">
+			<th mat-header-cell *matHeaderCellDef>Tipo Reclamo</th>
+			<td mat-cell *matCellDef="let element">
+				<mat-icon (click)="openModal(element)" class="material-icons-round"
+					>description</mat-icon
+				>
+			</td>
+		</ng-container>
+
+		<!-- Reenviar -->
+		<ng-container matColumnDef="reenviar">
+			<th mat-header-cell *matHeaderCellDef>Derivar</th>
+			<td mat-cell *matCellDef="let element">
+				<mat-icon class="material-icons-round">sync_alt</mat-icon>
+			</td>
+		</ng-container>
+
+		<!-- Modelo -->
+		<ng-container matColumnDef="modelo">
+			<th mat-header-cell *matHeaderCellDef>Reenviar Mensaje</th>
+			<td mat-cell *matCellDef="let element">
+				<mat-icon class="material-icons-round">library_books</mat-icon>
+			</td>
+		</ng-container>
+
+		<!-- Acción (Botón para abrir Modal) -->
 		<ng-container matColumnDef="accion">
-			<th mat-header-cell *matHeaderCellDef>ACCIÓN</th>
-			<td
-				mat-cell
-				*matCellDef="let element"
-				[ngClass]="getRowColor(element.fecha)"
-			>
-				<mat-form-field appearance="fill">
-					<mat-label>Área de Acción</mat-label>
-					<mat-select [(value)]="element.accion.area">
-						<mat-option *ngFor="let area of areas" [value]="area">{{
-							area
-						}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-				<div>{{ element.accion.fechaRegistro | date: "short" }}</div>
-				<div>{{ element.accion.respuesta }}</div>
-			</td>
-		</ng-container>
-
-		<!-- ESTADO -->
-		<ng-container matColumnDef="estado">
-			<th mat-header-cell *matHeaderCellDef>ESTADO</th>
-			<td
-				mat-cell
-				*matCellDef="let element"
-				[ngClass]="getRowColor(element.fecha)"
-			>
-				<mat-form-field appearance="fill">
-					<mat-label>Estado</mat-label>
-					<mat-select [(value)]="element.estado">
-						<mat-option *ngFor="let estado of estados" [value]="estado">{{
-							estado
-						}}</mat-option>
-					</mat-select>
-				</mat-form-field>
-			</td>
-		</ng-container>
-
-		<!-- APOYO CIU -->
-		<ng-container matColumnDef="apoyoCiu">
-			<th mat-header-cell *matHeaderCellDef>APOYO CIU</th>
-			<td
-				mat-cell
-				*matCellDef="let element"
-				[ngClass]="getRowColor(element.fecha)"
-			>
-				<mat-checkbox [(ngModel)]="element.apoyoCiu">Sí</mat-checkbox>
+			<th mat-header-cell *matHeaderCellDef>Acción</th>
+			<td mat-cell *matCellDef="let element">
+				<button mat-raised-button color="primary" (click)="openModal(element)">
+					Detalle
+				</button>
 			</td>
 		</ng-container>
 
 		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
 		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
 	</table>
+
+	<mat-paginator
+		class="pt-6"
+		[pageSizeOptions]="[5, 10, 20]"
+		showFirstLastButtons
+	></mat-paginator>
 </div>

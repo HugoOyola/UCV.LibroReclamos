@@ -1,25 +1,28 @@
-<div class="mx-4 my-2">
-	<div class="grid grid-cols-1 md:gap-4 lg:gap-10 md:grid-cols-2">
-		<!-- Selector de Universidades -->
-		<div class="space-y-2">
-			<label class="font-semibold" for="universidades">Campus:</label>
-			<mat-form-field appearance="outline" class="w-full">
-				<mat-label>Universidad</mat-label>
-				<mat-select [(ngModel)]="universidadSeleccionada">
-					<mat-option *ngFor="let uni of universidades" [value]="uni.id">
-						{{ uni.nombre }}
-					</mat-option>
-				</mat-select>
-			</mat-form-field>
-		</div>
+<mat-tab-group>
+	<!-- Primera Pestaña -->
+	<mat-tab label="Búsqueda Detallada">
+		<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 mx-4">
+			<!-- Selector de Universidades -->
+			<div class="flex flex-col">
+				<label for="universidades" class="mb-1 text-gray-700 font-bold"
+					>Campus:</label
+				>
+				<mat-form-field class="w-full" appearance="outline">
+					<mat-label>Universidad</mat-label>
+					<mat-select [(ngModel)]="universidadSeleccionada">
+						<mat-option *ngFor="let uni of universidades" [value]="uni.id">
+							{{ uni.nombre }} </mat-option
+						>0
+					</mat-select>
+				</mat-form-field>
+			</div>
 
-		<!-- Fecha de Inicio y Fin -->
-		<div class="space-y-2">
-			<label class="font-semibold" for="fecha-inicio"
-				>Búsqueda por Fechas:</label
-			>
-			<div class="flex space-x-6">
-				<mat-form-field appearance="outline" class="w-[50%]">
+			<!-- Fechas de Inicio -->
+			<div class="flex flex-col">
+				<label for="fecha-inicio" class="mb-1 text-gray-700 font-bold"
+					>Fecha Inicio:</label
+				>
+				<mat-form-field class="w-full" appearance="outline">
 					<mat-label>Fecha Inicio</mat-label>
 					<input matInput [matDatepicker]="picker1" [(ngModel)]="fechaInicio" />
 					<mat-datepicker-toggle
@@ -28,7 +31,14 @@
 					></mat-datepicker-toggle>
 					<mat-datepicker #picker1></mat-datepicker>
 				</mat-form-field>
-				<mat-form-field appearance="outline" class="w-[50%]">
+			</div>
+
+			<!-- Fechas de Fin -->
+			<div class="flex flex-col">
+				<label for="fecha-fin" class="mb-1 text-gray-700 font-bold"
+					>Fecha Fin:</label
+				>
+				<mat-form-field class="w-full" appearance="outline">
 					<mat-label>Fecha Fin</mat-label>
 					<input matInput [matDatepicker]="picker2" [(ngModel)]="fechaFin" />
 					<mat-datepicker-toggle
@@ -38,51 +48,76 @@
 					<mat-datepicker #picker2></mat-datepicker>
 				</mat-form-field>
 			</div>
-		</div>
-	</div>
 
-	<!-- Radio Group de Tipo de Reclamo -->
-	<div class="space-y-2 mb-4">
-		<label class="font-bold">Tipo de Reclamo:</label>
-		<mat-radio-group [(ngModel)]="tipoReclamo">
-			<div class="mobile-grid mobile-grid-cols-2 mobile-gap-4">
-				<mat-radio-button
-					*ngFor="let tipo of tiposReclamo"
-					[value]="tipo"
-					class="mr-4"
-				>
-					{{ tipo }}
-				</mat-radio-button>
+			<!-- Estado del Reclamo -->
+			<div class="flex flex-col md:col-span-2">
+				<label class="mb-1 text-gray-700 font-bold">Estado del Reclamo:</label>
+				<div class="grid grid-cols-2 gap-2">
+					<mat-checkbox
+						class="mr-4"
+						*ngFor="let est of estados"
+						[checked]="isChecked(est)"
+						(change)="toggleEstado($event.checked, est)"
+					>
+						{{ est }}
+					</mat-checkbox>
+				</div>
 			</div>
-		</mat-radio-group>
-	</div>
 
-	<!-- Checkbox de Estado del Reclamo -->
-	<div class="space-y-2 mb-4">
-		<label class="font-bold">Estado del Reclamo:</label>
-		<div class="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-7">
-			<mat-checkbox
-				*ngFor="let est of estados"
-				[checked]="isChecked(est)"
-				(change)="toggleEstado($event.checked, est)"
-			>
-				{{ est }}
-			</mat-checkbox>
+			<!-- Tipo de Reclamo -->
+			<div class="flex flex-col">
+				<label class="mb-1 text-gray-700 font-bold">Tipo de Reclamo:</label>
+				<mat-radio-group [(ngModel)]="tipoReclamo">
+					<div class="grid grid-cols-2 gap-2">
+						<mat-radio-button
+							class="mr-4"
+							*ngFor="let tipo of tiposReclamo"
+							[value]="tipo"
+						>
+							{{ tipo }}
+						</mat-radio-button>
+					</div>
+				</mat-radio-group>
+			</div>
+
+			<!-- Botón de búsqueda (ocupando toda la fila) -->
+			<div class="flex items-end md:col-span-3 mb-2">
+				<button
+					class="w-full text-white py-2 px-4 rounded shadow-lg flex items-center justify-center space-x-2"
+					mat-raised-button
+					color="primary"
+					(click)="buscar()"
+				>
+					<mat-icon class="material-icons-round">search</mat-icon>
+					<span class="font-semibold uppercase">Buscar</span>
+				</button>
+			</div>
 		</div>
-	</div>
+	</mat-tab>
 
-	<!-- Botón de búsqueda -->
-	<div class="flex justify-end pt-2">
-		<button
-			mat-raised-button
-			color="primary"
-			class="flex items-center px-4 py-2 text-white rounded-md"
-			(click)="buscar()"
-		>
-			<mat-icon class="material-icons-round">search</mat-icon>
-			Buscar
-		</button>
-	</div>
-</div>
-
-<!-- <app-list-reclamos></app-list-reclamos> -->
+	<!-- Segunda Pestaña -->
+	<!-- Búsqueda por Código -->
+	<mat-tab label="Buscar por Código">
+		<div class="space-y-4 p-4">
+			<!-- Etiqueta para el campo de código -->
+			<label class="font-bold text-gray-700" for="codigo">Código:</label>
+			<!-- Campo de entrada del código con estilo -->
+			<mat-form-field appearance="outline" class="w-full">
+				<mat-label>Ingrese el Código</mat-label>
+				<input matInput [(ngModel)]="codigo" />
+			</mat-form-field>
+			<!-- Botón de búsqueda alineado a la derecha -->
+			<div class="flex justify-end">
+				<button
+					mat-raised-button
+					color="primary"
+					class="text-white flex items-center px-4 rounded shadow-lg"
+					(click)="buscarPorCodigo()"
+				>
+					<mat-icon class="material-icons-round">search</mat-icon>
+					<span>Buscar</span>
+				</button>
+			</div>
+		</div>
+	</mat-tab>
+</mat-tab-group>

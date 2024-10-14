@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -10,35 +10,40 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-
-const MATERIAL_MODULES = [
-	MatFormFieldModule,
-	MatDatepickerModule,
-	MatNativeDateModule,
-	MatInputModule,
-	MatSelectModule,
-	MatRadioModule,
-	MatCheckboxModule,
-	MatButtonModule,
-	MatIconModule,
-];
+import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
 	selector: 'app-search-reclamos',
 	standalone: true,
-	imports: [MATERIAL_MODULES, FormsModule, ReactiveFormsModule, CommonModule],
+	imports: [
+		MatFormFieldModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatInputModule,
+		MatSelectModule,
+		MatRadioModule,
+		MatCheckboxModule,
+		MatButtonModule,
+		MatIconModule,
+		MatTabsModule,
+		FormsModule,
+		ReactiveFormsModule,
+		CommonModule,
+	],
 	templateUrl: './search-reclamos.component.html',
-	styleUrl: './search-reclamos.component.scss',
+	styleUrls: ['./search-reclamos.component.scss'],
 })
-export class SearchReclamosComponent {
-	public tipoReclamo = '';
-	public estado: Set<string> = new Set(); // Cambiado a Set para evitar duplicados
-	public fechaInicio: Date | null = null;
-	public fechaFin: Date | null = null;
-	public universidadSeleccionada: string | null = null; // Añadido para seleccionar universidad
+export class SearchReclamosComponent implements OnInit {
+	public codigo: string = ''; // Campo para el código
+	public tipoReclamo = ''; // Tipo de reclamo seleccionado
+	public estado: Set<string> = new Set(); // Set para el estado de los reclamos
+	public fechaInicio: Date | null = null; // Fecha de inicio de búsqueda
+	public fechaFin: Date | null = null; // Fecha de fin de búsqueda
+	public universidadSeleccionada: string | null = null; // Universidad seleccionada
 
 	// Lista de universidades
 	public universidades = [
+		{ id: '0', nombre: 'TODOS' },
 		{ id: '6700000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - CALLAO' },
 		{ id: '7100000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - CHEPEN' },
 		{ id: '1000003204', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - CHICLAYO' },
@@ -55,6 +60,7 @@ export class SearchReclamosComponent {
 
 	public tiposReclamo = ['Todos', 'Reclamo', 'Queja', 'Consulta / Sugerencia'];
 	public estados = [
+		'Todos',
 		'Pendiente',
 		'En Proceso',
 		'Atendido',
@@ -64,26 +70,40 @@ export class SearchReclamosComponent {
 		'Inválido',
 	];
 
-	isChecked(item: string): boolean {
-		return this.estado.has(item); // Cambiado para usar Set
+	ngOnInit(): void {
+		// Si necesitas lógica adicional para inicializar el valor
+		this.tipoReclamo = 'Todos'; // Aquí también puedes asegurarte de que se asigne el valor por defecto
 	}
 
+	// Función para verificar si el estado está seleccionado
+	isChecked(item: string): boolean {
+		return this.estado.has(item);
+	}
+
+	// Función para añadir o quitar el estado seleccionado
 	toggleEstado(checked: boolean, item: string): void {
 		if (checked) {
-			this.estado.add(item); // Cambiado para usar Set
+			this.estado.add(item);
 		} else {
-			this.estado.delete(item); // Cambiado para usar Set
+			this.estado.delete(item);
 		}
 	}
 
+	// Función de búsqueda por código
+	buscarPorCodigo(): void {
+		console.log({
+			codigo: this.codigo,
+		});
+	}
+
+	// Función de búsqueda detallada
 	buscar(): void {
-		// Manejar la búsqueda con los valores seleccionados
 		console.log({
 			fechaInicio: this.fechaInicio,
 			fechaFin: this.fechaFin,
 			tipoReclamo: this.tipoReclamo,
-			estado: Array.from(this.estado), // Convertido a Array para mostrar en la consola
-			universidad: this.universidadSeleccionada, // Añadido para incluir la universidad seleccionada
+			estado: Array.from(this.estado),
+			universidad: this.universidadSeleccionada,
 		});
 	}
 }
