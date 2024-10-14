@@ -33,10 +33,10 @@ export interface Reclamo {
 		MatDialogModule,
 		ModalContentComponent,
 	],
-	templateUrl: './listado-reclamos.component.html',
-	styleUrls: ['./listado-reclamos.component.scss'],
+	templateUrl: './list-reclamos.component.html',
+	styleUrls: ['./list-reclamos.component.scss'],
 })
-export class ListadoReclamosComponent implements AfterViewInit {
+export class ListReclamosComponent implements AfterViewInit {
 	// Aquí tipamos explícitamente la fuente de datos con Reclamo[]
 	public dataSource = new MatTableDataSource<Reclamo>(RECLAMOS_DATA);
 	// Columnas a mostrar en la tabla

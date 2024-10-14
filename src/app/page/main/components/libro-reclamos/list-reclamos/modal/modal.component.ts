@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { Reclamo } from '../listado-reclamos.component'; // Asegúrate de importar correctamente la interfaz
+import { Reclamo } from '../list-reclamos.component'; // Asegúrate de importar correctamente la interfaz
 
 @Component({
 	selector: 'app-modal-content',

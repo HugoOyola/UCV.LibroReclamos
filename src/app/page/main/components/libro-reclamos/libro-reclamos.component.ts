@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { SearchReclamosComponent } from './search-reclamos/search-reclamos.component';
-import { ListadoReclamosComponent } from './listado-reclamos/listado-reclamos.component';
+import { ListReclamosComponent } from './list-reclamos/list-reclamos.component';
 
 @Component({
 	selector: 'app-libro-reclamo',
 	standalone: true,
-	imports: [SearchReclamosComponent, ListadoReclamosComponent],
+	imports: [SearchReclamosComponent, ListReclamosComponent],
 	templateUrl: './libro-reclamos.component.html',
 	styleUrls: ['./libro-reclamos.component.scss'],
 })
