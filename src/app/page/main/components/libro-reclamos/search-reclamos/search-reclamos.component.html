@@ -1,7 +1,10 @@
 <mat-tab-group>
-	<!-- Primera Pestaña -->
+	<!-- Primera Pestaña: Búsqueda Detallada -->
 	<mat-tab label="Búsqueda Detallada">
-		<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 mx-4">
+		<form
+			[formGroup]="detalladaForm"
+			class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 mx-4"
+		>
 			<!-- Selector de Universidades -->
 			<div class="flex flex-col">
 				<label for="universidades" class="mb-1 text-gray-700 font-bold"
@@ -9,11 +12,17 @@
 				>
 				<mat-form-field class="w-full" appearance="outline">
 					<mat-label>Universidad</mat-label>
-					<mat-select [(ngModel)]="universidadSeleccionada">
-						<mat-option *ngFor="let uni of universidades" [value]="uni.id">
-							{{ uni.nombre }} </mat-option
-						>0
+					<mat-select formControlName="universidadSeleccionada">
+						<mat-option *ngFor="let uni of universidades" [value]="uni.id">{{
+							uni.nombre
+						}}</mat-option>
 					</mat-select>
+					<mat-error
+						*ngIf="
+							detalladaForm.get('universidadSeleccionada')?.hasError('required')
+						"
+						>Seleccione un campus.</mat-error
+					>
 				</mat-form-field>
 			</div>
 
@@ -24,12 +33,23 @@
 				>
 				<mat-form-field class="w-full" appearance="outline">
 					<mat-label>Fecha Inicio</mat-label>
-					<input matInput [matDatepicker]="picker1" [(ngModel)]="fechaInicio" />
+					<input
+						matInput
+						[matDatepicker]="picker1"
+						formControlName="fechaInicio"
+						(dateChange)="
+							detalladaForm.get('fechaFin')?.updateValueAndValidity()
+						"
+					/>
 					<mat-datepicker-toggle
 						matSuffix
 						[for]="picker1"
 					></mat-datepicker-toggle>
 					<mat-datepicker #picker1></mat-datepicker>
+					<mat-error
+						*ngIf="detalladaForm.get('fechaInicio')?.hasError('required')"
+						>Seleccione una fecha de inicio.</mat-error
+					>
 				</mat-form-field>
 			</div>
 
@@ -40,12 +60,24 @@
 				>
 				<mat-form-field class="w-full" appearance="outline">
 					<mat-label>Fecha Fin</mat-label>
-					<input matInput [matDatepicker]="picker2" [(ngModel)]="fechaFin" />
+					<input
+						matInput
+						[matDatepicker]="picker2"
+						formControlName="fechaFin"
+						[min]="detalladaForm.get('fechaInicio')?.value"
+					/>
 					<mat-datepicker-toggle
 						matSuffix
 						[for]="picker2"
 					></mat-datepicker-toggle>
 					<mat-datepicker #picker2></mat-datepicker>
+					<mat-error *ngIf="detalladaForm.get('fechaFin')?.hasError('required')"
+						>Seleccione una fecha de fin.</mat-error
+					>
+					<mat-error *ngIf="detalladaForm.hasError('rangoInvalido')"
+						>La fecha de fin no puede ser anterior a la fecha de
+						inicio.</mat-error
+					>
 				</mat-form-field>
 			</div>
 
@@ -54,7 +86,6 @@
 				<label class="mb-1 text-gray-700 font-bold">Estado del Reclamo:</label>
 				<div class="grid grid-cols-2 gap-2">
 					<mat-checkbox
-						class="mr-4"
 						*ngFor="let est of estados"
 						[checked]="isChecked(est)"
 						(change)="toggleEstado($event.checked, est)"
@@ -67,20 +98,18 @@
 			<!-- Tipo de Reclamo -->
 			<div class="flex flex-col">
 				<label class="mb-1 text-gray-700 font-bold">Tipo de Reclamo:</label>
-				<mat-radio-group [(ngModel)]="tipoReclamo">
+				<mat-radio-group formControlName="tipoReclamoDetallado">
 					<div class="grid grid-cols-2 gap-2">
 						<mat-radio-button
-							class="mr-4"
 							*ngFor="let tipo of tiposReclamo"
 							[value]="tipo"
+							>{{ tipo }}</mat-radio-button
 						>
-							{{ tipo }}
-						</mat-radio-button>
 					</div>
 				</mat-radio-group>
 			</div>
 
-			<!-- Botón de búsqueda (ocupando toda la fila) -->
+			<!-- Botón de búsqueda -->
 			<div class="flex items-end md:col-span-3 mb-2">
 				<button
 					class="w-full text-white py-2 px-4 rounded shadow-lg flex items-center justify-center space-x-2"
@@ -92,21 +121,26 @@
 					<span class="font-semibold uppercase">Buscar</span>
 				</button>
 			</div>
-		</div>
+		</form>
 	</mat-tab>
 
-	<!-- Segunda Pestaña -->
-	<!-- Búsqueda por Código -->
+	<!-- Segunda Pestaña: Búsqueda por Código -->
 	<mat-tab label="Buscar por Código">
-		<div class="space-y-4 p-4">
-			<!-- Etiqueta para el campo de código -->
+		<form [formGroup]="codigoForm" class="space-y-4 p-4">
+			<!-- Campo de entrada del código -->
 			<label class="font-bold text-gray-700" for="codigo">Código:</label>
-			<!-- Campo de entrada del código con estilo -->
 			<mat-form-field appearance="outline" class="w-full">
 				<mat-label>Ingrese el Código</mat-label>
-				<input matInput [(ngModel)]="codigo" />
+				<input matInput formControlName="codigo" />
+				<mat-error *ngIf="codigoForm.get('codigo')?.hasError('required')"
+					>El campo es obligatorio.</mat-error
+				>
+				<mat-error *ngIf="codigoForm.get('codigo')?.hasError('minlength')"
+					>El código debe tener al menos 5 dígitos.</mat-error
+				>
 			</mat-form-field>
-			<!-- Botón de búsqueda alineado a la derecha -->
+
+			<!-- Botón de búsqueda -->
 			<div class="flex justify-end">
 				<button
 					mat-raised-button
@@ -118,6 +152,6 @@
 					<span>Buscar</span>
 				</button>
 			</div>
-		</div>
+		</form>
 	</mat-tab>
 </mat-tab-group>
