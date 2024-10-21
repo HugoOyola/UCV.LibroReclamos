@@ -61,3 +61,42 @@ export interface ObtenerDatosPersonales {
 	permail_dbu: string;
 	pertelefono_dbu: string;
 }
+
+export interface ObtenerDatosSedes {
+	nUniOrgCodigo: number;
+	cPerJuridica: string;
+	cUniOrgNombre: string;
+	cPerApellido: string;
+	nFilCodigo: number;
+	nombreCorto: string;
+	direccionPrincipal: string;
+	filialPeople: string;
+}
+export interface ObtenerDatosPlanes {
+	nIntPadre: number;
+	cIntPadre: string;
+	nIntCodigo: number;
+	nIntClase: number;
+	cIntDescripcion: string;
+	nIntTipo: number;
+	nIntPadre2: number;
+	cIntPadre2: string;
+}
+
+export interface Option {
+	nIntCodigo: number;
+	cIntDescripcion: string;
+}
+
+export interface OptionGroup {
+	label: string; // Este es el cIntPadre
+	options: Option[];
+}
+
+export interface Reclamo {
+	idreclamo: string;
+	crecnombre: string;
+	crecdni: string;
+	crectelefono: string;
+	totalRows: number;
+}
