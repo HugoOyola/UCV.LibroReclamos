@@ -12,6 +12,8 @@ import { CommonModule } from '@angular/common';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { UniversidadService } from '@shared/services/universidades.service';
+import { Universidad } from '../../../interface/universidades';
 
 @Component({
 	selector: 'app-search-reclamos',
@@ -43,6 +45,7 @@ export class SearchReclamosComponent implements OnInit {
 	public universidadSeleccionada: string | null = null; // Universidad seleccionada
 	public codigoForm!: FormGroup;
 	public detalladaForm!: FormGroup;
+	public universidades: Universidad[] = [];  // Lista tipada de universidades
 
 	// Variables para mostrar mensajes de error
 	public errorUniversidad = false;
@@ -54,22 +57,7 @@ export class SearchReclamosComponent implements OnInit {
 	public tipoReclamoDetallado = ''; // Tipo de reclamo para búsqueda detallada
 	public estadoDetallado: Set<string> = new Set(); // Set para el estado de los reclamos en búsqueda detallada
 
-	// Lista de universidades
-	public universidades = [
-		{ id: '0', nombre: 'TODOS' },
-		{ id: '6700000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - CALLAO' },
-		{ id: '7100000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - CHEPEN' },
-		{ id: '1000003204', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - CHICLAYO' },
-		{ id: '1000147917', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - CHIMBOTE' },
-		{ id: '6800000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - HUARAZ' },
-		{ id: '6600000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - LIMA ATE' },
-		{ id: '6500000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - LIMA ESTE' },
-		{ id: '1000095671', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - LIMA NORTE' },
-		{ id: '6900000000', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - MOYOBAMBA' },
-		{ id: '1000114557', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - PIURA' },
-		{ id: '1000136996', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - TARAPOTO' },
-		{ id: '1000098770', nombre: 'UNIVERSIDAD CÉSAR VALLEJO SAC - TRUJILLO' },
-	];
+
 
 	public tiposReclamo = ['Todos', 'Reclamo', 'Queja', 'Consulta / Sugerencia'];
 	public estados = [
@@ -83,11 +71,11 @@ export class SearchReclamosComponent implements OnInit {
 		'Inválido',
 	];
 
-	constructor(private fb: FormBuilder) {}
+	constructor(private fb: FormBuilder, private universidadService: UniversidadService) {}
 
 	ngOnInit(): void {
 		this.tipoReclamoDetallado = 'Todos'; // Tipo de reclamo seleccionado por defecto
-		this.estadoDetallado.add('Todos'); // Selecciona el estado "Todos" por defecto
+		this.estado.add('Todos'); // Selecciona el estado "Todos" por defecto
 
 		// Formulario para la búsqueda por código
 		this.codigoForm = this.fb.group({
@@ -100,7 +88,34 @@ export class SearchReclamosComponent implements OnInit {
 			fechaInicio: [null, Validators.required],
 			fechaFin: [null, Validators.required],
 			tipoReclamoDetallado: ['Todos'],
-			estadoDetallado: [this.estadoDetallado],
+			estadoDetallado: [this.estado],
+		});
+
+	this.loadUniversidades();  // Cargar universidades al iniciar
+	}
+
+	// Función para cargar universidades desde la API
+	loadUniversidades(): void {
+		const filtro = {
+			vcPerCodigo: '7000090106',
+			vnModuloId: 2,
+			vnEsAutorizado: 0,
+			vnTipoCurricula: 0,
+			detalleConfiguracion: {
+				vIdModulo: 0,
+				vnSisGruCodigo: 0,
+				vnSisGruTipo: 0,
+				vnObjTipo: 0,
+				vnObjCodigo: 'string'
+			}
+		};
+	this.universidadService.getUniversidades(filtro).subscribe({
+			next: (data) => {
+				this.universidades = data.lstItem;  // Asigna las universidades obtenidas a la variable local
+			},
+			error: (error) => {
+				console.error('Error al cargar universidades', error);
+			}
 		});
 	}
 
@@ -124,16 +139,16 @@ export class SearchReclamosComponent implements OnInit {
 
 	// Función para verificar si el estado está seleccionado
 	isChecked(item: string): boolean {
-		return this.estadoDetallado.has(item);
+		return this.estado.has(item);
 	}
 
 	// Función para añadir o quitar el estado seleccionado
 	toggleEstado(checked: boolean, item: string): void {
 		if (checked) {
-			this.estadoDetallado.add(item);
+			this.estado.add(item);
 		} else {
-			this.estadoDetallado.delete(item);
+			this.estado.delete(item);
 		}
-		this.detalladaForm.get('estadoDetallado')?.setValue(this.estadoDetallado); // Actualiza el valor del estado en el formulario
+		this.detalladaForm.get('estadoDetallado')?.setValue(this.estado); // Actualiza el valor del estado en el formulario
 	}
 }

@@ -3,7 +3,7 @@
 		<!-- Cod Reclamo -->
 		<ng-container matColumnDef="codReclamo">
 			<th mat-header-cell *matHeaderCellDef>Cod. Reclamo</th>
-			<td mat-cell *matCellDef="let element">{{ element.codReclamo }}</td>
+			<td mat-cell *matCellDef="let element">{{ element.idreclamo }}</td>
 		</ng-container>
 
 		<!-- Usuario -->
@@ -15,35 +15,31 @@
 		<!-- Usuario Reclamante -->
 		<ng-container matColumnDef="usuarioReclamante">
 			<th mat-header-cell *matHeaderCellDef>Usuario Reclamante</th>
-			<td mat-cell *matCellDef="let element">
-				{{ element.usuarioReclamante }}
-			</td>
+			<td mat-cell *matCellDef="let element">{{ element.cRecNombre }}</td>
 		</ng-container>
 
 		<!-- DNI -->
 		<ng-container matColumnDef="dni">
 			<th mat-header-cell *matHeaderCellDef>DNI</th>
-			<td mat-cell *matCellDef="let element">{{ element.dni }}</td>
+			<td mat-cell *matCellDef="let element">{{ element.cRecDni }}</td>
 		</ng-container>
 
 		<!-- Fecha Registro -->
 		<ng-container matColumnDef="fechaRegistro">
 			<th mat-header-cell *matHeaderCellDef>Fecha Registro</th>
-			<td mat-cell *matCellDef="let element">
-				{{ element.fechaRegistro }}
-			</td>
+			<td mat-cell *matCellDef="let element">{{ element.cRecFecha }}</td>
 		</ng-container>
 
 		<!-- Correo -->
 		<ng-container matColumnDef="correo">
 			<th mat-header-cell *matHeaderCellDef>Correo</th>
-			<td mat-cell *matCellDef="let element">{{ element.correo }}</td>
+			<td mat-cell *matCellDef="let element">{{ element.cRecEmail }}</td>
 		</ng-container>
 
 		<!-- Filial -->
 		<ng-container matColumnDef="filial">
 			<th mat-header-cell *matHeaderCellDef>Filial</th>
-			<td mat-cell *matCellDef="let element">{{ element.filial }}</td>
+			<td mat-cell *matCellDef="let element">{{ element.cPerJuridica }}</td>
 		</ng-container>
 
 		<!-- Arch -->
@@ -54,7 +50,7 @@
 			</td>
 		</ng-container>
 
-		<!-- Detalle -->
+		<!-- Tipo Reclamo -->
 		<ng-container matColumnDef="tipo">
 			<th mat-header-cell *matHeaderCellDef>Tipo Reclamo</th>
 			<td mat-cell *matCellDef="let element">
@@ -80,7 +76,7 @@
 			</td>
 		</ng-container>
 
-		<!-- Acción (Botón para abrir Modal) -->
+		<!-- Acción -->
 		<ng-container matColumnDef="accion">
 			<th mat-header-cell *matHeaderCellDef>Acción</th>
 			<td mat-cell *matCellDef="let element">

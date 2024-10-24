@@ -13,17 +13,18 @@
 				<mat-form-field class="w-full" appearance="outline">
 					<mat-label>Universidad</mat-label>
 					<mat-select formControlName="universidadSeleccionada">
-						<mat-option *ngFor="let uni of universidades" [value]="uni.id">{{
-							uni.nombre
-						}}</mat-option>
+						<!-- Usamos *ngFor para iterar sobre las universidades -->
+						<mat-option *ngFor="let uni of universidades" [value]="uni.nUniOrgCodigo">
+							{{ uni.cUniOrgNombre }}
+						</mat-option>
 					</mat-select>
 					<mat-error
-						*ngIf="
-							detalladaForm.get('universidadSeleccionada')?.hasError('required')
-						"
-						>Seleccione un campus.</mat-error
+						*ngIf="detalladaForm.get('universidadSeleccionada')?.hasError('required')"
 					>
+						Seleccione una universidad.
+					</mat-error>
 				</mat-form-field>
+
 			</div>
 
 			<!-- Fechas de Inicio -->

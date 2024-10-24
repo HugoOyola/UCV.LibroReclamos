@@ -1,13 +1,13 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
-import { Reclamo } from '../list-reclamos.component'; // Asegúrate de importar correctamente la interfaz
+import { Reclamo } from '../../../../interface/reclamo'; // Asegúrate de importar correctamente la interfaz
 
 @Component({
 	selector: 'app-modal-content',
 	standalone: true,
 	imports: [CommonModule, MatDialogModule],
-	template: `
+ template: `
 		<h2 mat-dialog-title>Detalles del Reclamo</h2>
 		<mat-dialog-content>
 			<p><strong>Código de Reclamo:</strong> {{ data.codReclamo }}</p>
@@ -18,7 +18,7 @@ import { Reclamo } from '../list-reclamos.component'; // Asegúrate de importar 
 			<p><strong>Correo:</strong> {{ data.correo }}</p>
 			<p><strong>Filial:</strong> {{ data.filial }}</p>
 		</mat-dialog-content>
-		<mat-dialog-actions>
+		<mat-dialog-actions align="end">
 			<button mat-button mat-dialog-close>Cerrar</button>
 		</mat-dialog-actions>
 	`,

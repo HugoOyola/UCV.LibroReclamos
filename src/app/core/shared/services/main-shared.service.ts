@@ -1,5 +1,5 @@
-import {Injectable, signal} from '@angular/core';
-import {ObtenerDatosPersonales} from '../../../page/main/interface/principal';
+import { Injectable, signal } from '@angular/core';
+import { ObtenerDatosPersonales } from '../../../page/main/interface/principal';
 
 @Injectable({
 	providedIn: 'root',

@@ -1,29 +1,19 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
+import { AfterViewInit, Component, ViewChild, OnInit } from '@angular/core';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ReclamosService } from '@shared/services/reclamo.service';
+import { Reclamo } from '../../../interface/reclamo';
+import { ModalContentComponent } from './modal/modal.component';
 import { CommonModule } from '@angular/common';
-import { MatTableModule } from '@angular/material/table';
-import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
-import { ModalContentComponent } from './modal/modal.component';
-
-// Interfaz Reclamo para tipar los datos correctamente
-export interface Reclamo {
-	codReclamo: number;
-	usuario: string;
-	usuarioReclamante: string;
-	dni: string;
-	fechaRegistro: string;
-	correo: string;
-	filial: string;
-}
 
 @Component({
 	selector: 'app-control-reclamos',
 	standalone: true,
+	templateUrl: './list-reclamos.component.html',
+	styleUrls: ['./list-reclamos.component.scss'],
 	imports: [
 		CommonModule,
 		MatTableModule,
@@ -33,13 +23,9 @@ export interface Reclamo {
 		MatDialogModule,
 		ModalContentComponent,
 	],
-	templateUrl: './list-reclamos.component.html',
-	styleUrls: ['./list-reclamos.component.scss'],
 })
-export class ListReclamosComponent implements AfterViewInit {
-	// Aquí tipamos explícitamente la fuente de datos con Reclamo[]
-	public dataSource = new MatTableDataSource<Reclamo>(RECLAMOS_DATA);
-	// Columnas a mostrar en la tabla
+export class ListReclamosComponent implements AfterViewInit, OnInit {
+	public dataSource = new MatTableDataSource<Reclamo>([]);
 	public displayedColumns: string[] = [
 		'codReclamo',
 		'usuario',
@@ -55,39 +41,49 @@ export class ListReclamosComponent implements AfterViewInit {
 		'accion',
 	];
 
-	@ViewChild(MatPaginator) public paginator!: MatPaginator;
+	@ViewChild(MatPaginator)
+	public paginator!: MatPaginator;
+
+	// Este es el filtro que se enviará a la API
+	public filtro = {
+		idReclamo: "0",
+		cpercodigo: "7000090106",
+		cPerJuridica: "0",
+		dFechaInicio: "2024-09-01",
+		dFechaFin: "2024-10-10",
+		cTipoReclamo: "30",
+		cEstadoReclamo: "0",
+		pagination: {
+			pageIndex: 1,
+			pageSize: 10,
+			totalRows: 0
+		}
+	};
+
+	constructor(private reclamosService: ReclamosService, public dialog: MatDialog) {}
+
+	ngOnInit(): void {
+		this.loadReclamos();
+	}
 
 	ngAfterViewInit(): void {
 		this.dataSource.paginator = this.paginator;
 	}
 
-	openModal(element: Reclamo): void {
-		this.dialog.open(ModalContentComponent, {
-			data: element, // Aquí pasamos el elemento tipado como Reclamo
+	loadReclamos(): void {
+		this.reclamosService.getReclamos(this.filtro).subscribe({
+			next: (data: any) => {
+				this.dataSource.data = data.lstItem;  // Asigna los reclamos obtenidos de la API
+			},
+			error: (error) => {
+				console.error('Error al obtener los reclamos', error);
+			}
 		});
 	}
 
-	constructor(public dialog: MatDialog) {}
+	openModal(element: Reclamo): void {
+		this.dialog.open(ModalContentComponent, {
+			data: element,
+		});
+	}
 }
-
-const RECLAMOS_DATA: Reclamo[] = [
-	{
-		codReclamo: 20162,
-		usuario: 'Alumno',
-		usuarioReclamante: 'HOROSETIGL LANOS JOSELIN LUZ',
-		dni: '77330987',
-		fechaRegistro: '01/10/2024 10:25:57 PM',
-		correo: 'joselin.lanos@gmail.com',
-		filial: 'HUARAZ',
-	},
-	{
-		codReclamo: 20161,
-		usuario: 'Alumno',
-		usuarioReclamante: 'VASQUEZ CALLE JACKELINE',
-		dni: '74964740',
-		fechaRegistro: '01/10/2024 8:15:21 PM',
-		correo: 'jvasquez0106@gmail.com',
-		filial: 'LIMA ESTE',
-	},
-	// Más datos aquí...
-];
