@@ -9,4 +9,7 @@ import { ListReclamosComponent } from './list-reclamos/list-reclamos.component';
 	templateUrl: './libro-reclamos.component.html',
 	styleUrls: ['./libro-reclamos.component.scss'],
 })
-export class LibroReclamosComponent {}
+export class LibroReclamosComponent {
+	public codigo: string = '';
+	public filtros!: { campus: string; fechaInicio: Date; fechaFin: Date };
+}

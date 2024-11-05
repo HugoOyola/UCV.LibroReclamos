@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -37,6 +37,15 @@ import { Universidad } from '../../../interface/universidades';
 	styleUrls: ['./search-reclamos.component.scss'],
 })
 export class SearchReclamosComponent implements OnInit {
+	@Output()
+	public codigoBuscado = new EventEmitter<string>();
+	@Output()
+	public filtrosBuscados = new EventEmitter<{
+		campus: string;
+		fechaInicio: Date;
+		fechaFin: Date;
+	}>();
+
 	public codigo: string = ''; // Campo para el código
 	public tipoReclamo = ''; // Tipo de reclamo seleccionado
 	public estado: Set<string> = new Set(); // Set para el estado de los reclamos
@@ -45,7 +54,7 @@ export class SearchReclamosComponent implements OnInit {
 	public universidadSeleccionada: string | null = null; // Universidad seleccionada
 	public codigoForm!: FormGroup;
 	public detalladaForm!: FormGroup;
-	public universidades: Universidad[] = [];  // Lista tipada de universidades
+	public universidades: Universidad[] = []; // Lista tipada de universidades
 
 	// Variables para mostrar mensajes de error
 	public errorUniversidad = false;
@@ -56,8 +65,6 @@ export class SearchReclamosComponent implements OnInit {
 	// Variables de búsqueda detallada
 	public tipoReclamoDetallado = ''; // Tipo de reclamo para búsqueda detallada
 	public estadoDetallado: Set<string> = new Set(); // Set para el estado de los reclamos en búsqueda detallada
-
-
 
 	public tiposReclamo = ['Todos', 'Reclamo', 'Queja', 'Consulta / Sugerencia'];
 	public estados = [
@@ -71,7 +78,10 @@ export class SearchReclamosComponent implements OnInit {
 		'Inválido',
 	];
 
-	constructor(private fb: FormBuilder, private universidadService: UniversidadService) {}
+	constructor(
+		private fb: FormBuilder,
+		private universidadService: UniversidadService,
+	) {}
 
 	ngOnInit(): void {
 		this.tipoReclamoDetallado = 'Todos'; // Tipo de reclamo seleccionado por defecto
@@ -91,7 +101,7 @@ export class SearchReclamosComponent implements OnInit {
 			estadoDetallado: [this.estado],
 		});
 
-	this.loadUniversidades();  // Cargar universidades al iniciar
+		this.loadUniversidades(); // Cargar universidades al iniciar
 	}
 
 	// Función para cargar universidades desde la API
@@ -106,34 +116,41 @@ export class SearchReclamosComponent implements OnInit {
 				vnSisGruCodigo: 0,
 				vnSisGruTipo: 0,
 				vnObjTipo: 0,
-				vnObjCodigo: 'string'
-			}
+				vnObjCodigo: 'string',
+			},
 		};
-	this.universidadService.getUniversidades(filtro).subscribe({
+		this.universidadService.getUniversidades(filtro).subscribe({
 			next: (data) => {
-				this.universidades = data.lstItem;  // Asigna las universidades obtenidas a la variable local
+				this.universidades = data.lstItem; // Asigna las universidades obtenidas a la variable local
 			},
 			error: (error) => {
 				console.error('Error al cargar universidades', error);
-			}
+			},
 		});
 	}
 
 	// Función de búsqueda por código
 	buscarPorCodigo(): void {
 		if (this.codigoForm.valid) {
-			console.log('Búsqueda por código:', this.codigoForm.value);
+			const codigo = this.codigoForm.get('codigo')?.value;
+			this.codigoBuscado.emit(codigo); // Emitir el código
 		} else {
-			this.codigoForm.markAllAsTouched(); // Marca todos los campos como "touched" para que se muestren los errores
+			this.codigoForm.markAllAsTouched();
 		}
 	}
 
 	// Función de búsqueda detallada
 	buscar(): void {
 		if (this.detalladaForm.valid) {
-			console.log('Búsqueda detallada:', this.detalladaForm.value);
+			const { universidadSeleccionada, fechaInicio, fechaFin } =
+				this.detalladaForm.value;
+			this.filtrosBuscados.emit({
+				campus: universidadSeleccionada,
+				fechaInicio,
+				fechaFin,
+			});
 		} else {
-			this.detalladaForm.markAllAsTouched(); // Marca todos los campos como "touched" para que se muestren los errores
+			this.detalladaForm.markAllAsTouched();
 		}
 	}
 

@@ -1,5 +1,6 @@
+// reclamos.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reclamo } from '../../../page/main/interface/reclamo';
 
@@ -11,7 +12,8 @@ export class ReclamosService {
 
   constructor(private http: HttpClient) {}
 
-  getReclamos(filtro: any): Observable<any> {
-    return this.http.post<any>(this.apiUrl, filtro); // Realiza la petición a la API con el filtro
+  getReclamos(filtro: any): Observable<{ lstItem: Reclamo[] }> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<{ lstItem: Reclamo[] }>(this.apiUrl, filtro, { headers });
   }
 }
