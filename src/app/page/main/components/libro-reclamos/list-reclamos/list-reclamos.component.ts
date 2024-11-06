@@ -15,7 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 @Component({
-	selector: 'app-control-reclamos',
+	selector: 'app-list-reclamos',
 	standalone: true,
 	templateUrl: './list-reclamos.component.html',
 	styleUrls: ['./list-reclamos.component.scss'],
