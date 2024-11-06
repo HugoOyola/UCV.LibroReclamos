@@ -2,8 +2,8 @@ import { AfterViewInit, Component, ViewChild, OnInit, Input } from '@angular/cor
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { ReclamosService } from '@shared/services/reclamo.service';
-import { UniversidadService } from '@shared/services/universidades.service';
+import { ReclamosService } from '../../../services/reclamo.service';
+import { UniversidadService } from '../../../services/universidades.service';
 import { Reclamo } from '../../../interface/reclamo';
 import { ModalContentComponent } from './modal/modal.component';
 import { CommonModule } from '@angular/common';
