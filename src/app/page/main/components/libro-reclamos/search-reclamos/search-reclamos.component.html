@@ -73,13 +73,27 @@
 					></mat-datepicker-toggle>
 					<mat-datepicker #picker2></mat-datepicker>
 					<mat-error *ngIf="detalladaForm.get('fechaFin')?.hasError('required')"
-						>Seleccione una fecha de fin.</mat-error
+					>Seleccione una fecha de fin.</mat-error
 					>
 					<mat-error *ngIf="detalladaForm.hasError('rangoInvalido')"
-						>La fecha de fin no puede ser anterior a la fecha de
-						inicio.</mat-error
+					>La fecha de fin no puede ser anterior a la fecha de
+					inicio.</mat-error
 					>
 				</mat-form-field>
+			</div>
+
+			<!-- Tipo de Reclamo -->
+			<div class="flex flex-col">
+				<label class="mb-1 text-gray-700 font-bold">Tipo de Reclamo:</label>
+				<mat-radio-group formControlName="tipoReclamoDetallado">
+					<div class="grid grid-cols-2 gap-2">
+						<mat-radio-button
+							*ngFor="let tipo of tiposReclamo"
+							[value]="tipo"
+							>{{ tipo }}</mat-radio-button
+						>
+					</div>
+				</mat-radio-group>
 			</div>
 
 			<!-- Estado del Reclamo -->
@@ -96,19 +110,6 @@
 				</div>
 			</div>
 
-			<!-- Tipo de Reclamo -->
-			<div class="flex flex-col">
-				<label class="mb-1 text-gray-700 font-bold">Tipo de Reclamo:</label>
-				<mat-radio-group formControlName="tipoReclamoDetallado">
-					<div class="grid grid-cols-2 gap-2">
-						<mat-radio-button
-							*ngFor="let tipo of tiposReclamo"
-							[value]="tipo"
-							>{{ tipo }}</mat-radio-button
-						>
-					</div>
-				</mat-radio-group>
-			</div>
 
 			<!-- Botón de búsqueda -->
 			<div class="flex items-end md:col-span-3 mb-2">

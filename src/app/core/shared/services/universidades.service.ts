@@ -1,7 +1,7 @@
-// universidad.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { Universidad } from '../../../page/main/interface/universidades';
 
 @Injectable({
@@ -13,6 +13,11 @@ export class UniversidadService {
   constructor(private http: HttpClient) {}
 
   getUniversidades(filtro: any): Observable<{ lstItem: Universidad[] }> {
-    return this.http.post<{ lstItem: Universidad[] }>(this.apiUrl, filtro);
+    return this.http.post<{ lstItem: Universidad[] }>(this.apiUrl, filtro).pipe(
+      catchError((error) => {
+        console.error('Error al cargar universidades', error);
+        return throwError(() => new Error('Error al cargar universidades'));
+      })
+    );
   }
 }
