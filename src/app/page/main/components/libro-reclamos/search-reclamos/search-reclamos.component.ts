@@ -1,7 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+	Component,
+	OnInit,
+	EventEmitter,
+	Output,
+	Input,
+	effect,
+	OnChanges,
+	SimpleChanges,
+} from '@angular/core';
+import {
+	FormsModule,
+	ReactiveFormsModule,
+	FormBuilder,
+	FormGroup,
+	Validators,
+} from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +28,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Universidad } from '../../../interface/universidades';
 import { UniversidadService } from '../../../services/universidades.service';
+import { MainSharedService } from '@shared/services/main-shared.service';
 
 @Component({
 	selector: 'app-search-reclamos',
@@ -36,35 +51,31 @@ import { UniversidadService } from '../../../services/universidades.service';
 	templateUrl: './search-reclamos.component.html',
 	styleUrls: ['./search-reclamos.component.scss'],
 })
-export class SearchReclamosComponent implements OnInit {
-	@Output()
-	public codigoBuscado = new EventEmitter<string>();
-	@Output()
-	public filtrosBuscados = new EventEmitter<{
+export class SearchReclamosComponent implements OnInit, OnChanges {
+	@Input() public codigo!: string; // Recibe el código desde LibroReclamosComponent
+	@Output() public codigoBuscado = new EventEmitter<string>();
+	@Output() public filtrosBuscados = new EventEmitter<{
 		campus: string;
 		fechaInicio: Date;
 		fechaFin: Date;
 	}>();
 
-	public codigo: string = ''; // Campo para el código
-	public tipoReclamo = ''; // Tipo de reclamo seleccionado
-	public estado: Set<string> = new Set(); // Set para el estado de los reclamos
-	public fechaInicio: Date | null = null; // Fecha de inicio de búsqueda
-	public fechaFin: Date | null = null; // Fecha de fin de búsqueda
-	public universidadSeleccionada: string | null = null; // Universidad seleccionada
+	public tipoReclamo = '';
+	public estado: Set<string> = new Set();
+	public fechaInicio: Date | null = null;
+	public fechaFin: Date | null = null;
+	public universidadSeleccionada: string | null = null;
 	public codigoForm!: FormGroup;
 	public detalladaForm!: FormGroup;
-	public universidades: Universidad[] = []; // Lista tipada de universidades
+	public universidades: Universidad[] = [];
 
-	// Variables para mostrar mensajes de error
 	public errorUniversidad = false;
 	public errorFechaInicio = false;
 	public errorFechaFin = false;
 	public errorCodigo = false;
 
-	// Variables de búsqueda detallada
-	public tipoReclamoDetallado = ''; // Tipo de reclamo para búsqueda detallada
-	public estadoDetallado: Set<string> = new Set(); // Set para el estado de los reclamos en búsqueda detallada
+	public tipoReclamoDetallado = '';
+	public estadoDetallado: Set<string> = new Set();
 
 	public tiposReclamo = ['Todos', 'Reclamo', 'Queja', 'Consulta / Sugerencia'];
 	public estados = [
@@ -84,15 +95,13 @@ export class SearchReclamosComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
-		this.tipoReclamoDetallado = 'Todos'; // Tipo de reclamo seleccionado por defecto
-		this.estado.add('Todos'); // Selecciona el estado "Todos" por defecto
+		this.tipoReclamoDetallado = 'Todos';
+		this.estado.add('Todos');
 
-		// Formulario para la búsqueda por código
 		this.codigoForm = this.fb.group({
 			codigo: ['', [Validators.required, Validators.minLength(5)]],
 		});
 
-		// Formulario para la búsqueda detallada
 		this.detalladaForm = this.fb.group({
 			universidadSeleccionada: ['', Validators.required],
 			fechaInicio: [null, Validators.required],
@@ -100,14 +109,17 @@ export class SearchReclamosComponent implements OnInit {
 			tipoReclamoDetallado: ['Todos'],
 			estadoDetallado: [this.estado],
 		});
-
-		this.loadUniversidades(); // Cargar universidades al iniciar
 	}
-
-	// Función para cargar universidades desde la API
-	loadUniversidades(): void {
+	ngOnChanges(changes: SimpleChanges): void {
+		// Detecta cambios en el valor de codigo
+		if (changes['codigo'] && changes['codigo'].currentValue) {
+			this.loadUniversidades(changes['codigo'].currentValue);
+		}
+	}
+	// Función para cargar universidades desde la API basado en el código
+	loadUniversidades(codigo: string): void {
 		const filtro = {
-			vcPerCodigo: '7000090106',
+			vcPerCodigo: codigo,
 			vnModuloId: 3,
 			vnEsAutorizado: 1,
 			vnTipoCurricula: 0,
@@ -121,19 +133,18 @@ export class SearchReclamosComponent implements OnInit {
 		};
 		this.universidadService.getUniversidades(filtro).subscribe({
 			next: (data) => {
-				this.universidades = data.lstItem; // Asigna las universidades obtenidas a la variable local
+				this.universidades = data.lstItem; // Actualiza la lista de universidades
 			},
 			error: (error) => {
 				console.error('Error al cargar universidades', error);
 			},
 		});
 	}
-
 	// Función de búsqueda por código
 	buscarPorCodigo(): void {
 		if (this.codigoForm.valid) {
 			const codigo = this.codigoForm.get('codigo')?.value;
-			this.codigoBuscado.emit(codigo); // Emitir el código
+			this.codigoBuscado.emit(codigo);
 		} else {
 			this.codigoForm.markAllAsTouched();
 		}
@@ -154,18 +165,16 @@ export class SearchReclamosComponent implements OnInit {
 		}
 	}
 
-	// Función para verificar si el estado está seleccionado
 	isChecked(item: string): boolean {
 		return this.estado.has(item);
 	}
 
-	// Función para añadir o quitar el estado seleccionado
 	toggleEstado(checked: boolean, item: string): void {
 		if (checked) {
 			this.estado.add(item);
 		} else {
 			this.estado.delete(item);
 		}
-		this.detalladaForm.get('estadoDetallado')?.setValue(this.estado); // Actualiza el valor del estado en el formulario
+		this.detalladaForm.get('estadoDetallado')?.setValue(this.estado);
 	}
 }
