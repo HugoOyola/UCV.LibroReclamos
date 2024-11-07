@@ -81,7 +81,7 @@ export class SearchReclamosComponent implements OnInit {
 	constructor(
 		private fb: FormBuilder,
 		private universidadService: UniversidadService,
-	) {}
+	) { }
 
 	ngOnInit(): void {
 		this.tipoReclamoDetallado = 'Todos'; // Tipo de reclamo seleccionado por defecto
@@ -108,8 +108,8 @@ export class SearchReclamosComponent implements OnInit {
 	loadUniversidades(): void {
 		const filtro = {
 			vcPerCodigo: '7000090106',
-			vnModuloId: 2,
-			vnEsAutorizado: 0,
+			vnModuloId: 3,
+			vnEsAutorizado: 1,
 			vnTipoCurricula: 0,
 			detalleConfiguracion: {
 				vIdModulo: 0,

@@ -15,7 +15,7 @@
 					<mat-select formControlName="universidadSeleccionada">
 						<!-- Usamos *ngFor para iterar sobre las universidades -->
 						<mat-option *ngFor="let uni of universidades" [value]="uni.nUniOrgCodigo">
-							{{ uni.cUniOrgNombre }}
+							{{ uni.cPerApellido }}
 						</mat-option>
 					</mat-select>
 					<mat-error

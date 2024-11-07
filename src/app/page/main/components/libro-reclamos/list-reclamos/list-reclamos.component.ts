@@ -26,7 +26,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 		MatButtonModule,
 		MatIconModule,
 		MatDialogModule,
-		ModalContentComponent,MatTooltipModule
+		ModalContentComponent, MatTooltipModule
 	],
 })
 export class ListReclamosComponent implements AfterViewInit, OnInit {
@@ -82,7 +82,7 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 		private reclamosService: ReclamosService,
 		private universidadService: UniversidadService,
 		public dialog: MatDialog,
-	) {}
+	) { }
 
 	ngOnInit(): void {
 		this.loadReclamos();
@@ -108,7 +108,7 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 		this.universidadService.getUniversidades(filtro).subscribe({
 			next: (data) => {
 				this.campusNames = data.lstItem.reduce((acc: any, uni: Universidad) => {
-					acc[uni.cPerJuridica.trim()] = uni.cUniOrgNombre;
+					acc[uni.cPerJuridica.trim()] = uni.cPerApellido;
 					return acc;
 				}, {});
 				console.log('Campus Names:', this.campusNames);  // Verifica los nombres de los campus
