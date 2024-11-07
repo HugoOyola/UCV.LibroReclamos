@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild, OnInit, Input } from '@angular/core';
+import { AfterViewInit, Component, ViewChild, OnInit, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -13,7 +13,6 @@ import { ModalHistorialComponent } from './modal-historial/modal-historial.compo
 import { Universidad } from '../../../interface/universidades';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
-
 @Component({
 	selector: 'app-list-reclamos',
 	standalone: true,
@@ -26,16 +25,13 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 		MatButtonModule,
 		MatIconModule,
 		MatDialogModule,
-		ModalContentComponent, MatTooltipModule
+		ModalContentComponent,
+		MatTooltipModule,
 	],
 })
-export class ListReclamosComponent implements AfterViewInit, OnInit {
+export class ListReclamosComponent implements AfterViewInit, OnInit, OnChanges {
 	@Input()
-	public set codigo(codigo: string) {
-		if (codigo) {
-			this.buscarReclamoPorCodigo(codigo);
-		}
-	}
+	public codigo!: string;
 
 	@Input()
 	public set filtros(filtros: { campus: string; fechaInicio: Date; fechaFin: Date }) {
@@ -60,12 +56,11 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 		'accion',
 	];
 
-	@ViewChild(MatPaginator)
-	public paginator!: MatPaginator;
+	@ViewChild(MatPaginator) public paginator!: MatPaginator;
 
 	public filtro = {
 		idReclamo: '0',
-		cpercodigo: '7000090106',
+		cpercodigo: '',
 		cPerJuridica: '0',
 		dFechaInicio: '2024-01-01',
 		dFechaFin: '2024-10-10',
@@ -85,14 +80,27 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 	) { }
 
 	ngOnInit(): void {
-		this.loadReclamos();
 		this.loadCampusNames();
+		this.loadReclamos();
 	}
 
-	// list-reclamos.component.ts
+	ngOnChanges(changes: SimpleChanges): void {
+		// Detecta cambios en el valor de `codigo`
+		if (changes['codigo'] && changes['codigo'].currentValue) {
+			this.filtro.cpercodigo = changes['codigo'].currentValue; // Actualiza cpercodigo en el filtro
+			this.loadCampusNames();
+			this.loadReclamos();
+		}
+	}
+
+	ngAfterViewInit(): void {
+		this.dataSource.paginator = this.paginator;
+	}
+
+	// Cargar nombres de los campus usando el código de usuario dinámico
 	loadCampusNames(): void {
 		const filtro = {
-			vcPerCodigo: '7000090106',
+			vcPerCodigo: this.filtro.cpercodigo,
 			vnModuloId: 2,
 			vnEsAutorizado: 0,
 			vnTipoCurricula: 0,
@@ -101,8 +109,8 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 				vnSisGruCodigo: 0,
 				vnSisGruTipo: 0,
 				vnObjTipo: 0,
-				vnObjCodigo: 'string'
-			}
+				vnObjCodigo: 'string',
+			},
 		};
 
 		this.universidadService.getUniversidades(filtro).subscribe({
@@ -111,21 +119,16 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 					acc[uni.cPerJuridica.trim()] = uni.cPerApellido;
 					return acc;
 				}, {});
-				console.log('Campus Names:', this.campusNames);  // Verifica los nombres de los campus
 			},
 			error: (error) => console.error('Error al cargar nombres de campus', error),
 		});
 	}
 
-
-	ngAfterViewInit(): void {
-		this.dataSource.paginator = this.paginator;
-	}
-
+	// Cargar reclamos usando el filtro actualizado
 	loadReclamos(): void {
 		this.reclamosService.getReclamos(this.filtro).subscribe({
 			next: (data: any) => {
-				this.dataSource.data = data.lstItem; // Asigna los reclamos obtenidos de la API
+				this.dataSource.data = data.lstItem || [];
 			},
 			error: (error) => {
 				console.error('Error al obtener los reclamos', error);
@@ -133,39 +136,37 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 		});
 	}
 
+	// Búsqueda de un reclamo específico usando `codigo`
 	buscarReclamoPorCodigo(codigo: string): void {
 		const filtro = { ...this.filtro, idReclamo: codigo };
 		this.reclamosService.getReclamos(filtro).subscribe({
 			next: (data: any) => {
-				this.dataSource.data = data.lstItem;
+				this.dataSource.data = data.lstItem || [];
 			},
 			error: (error) => console.error('Error al buscar reclamo por código', error),
 		});
 	}
 
-	// list-reclamos.component.ts
+	// Búsqueda detallada usando `filtros`
 	buscarReclamosDetallados(filtros: { campus: string; fechaInicio: Date; fechaFin: Date }): void {
 		const filtro = {
-			idReclamo: '0',  // Valor fijo según la solicitud
-			cpercodigo: '7000090106',  // Código de usuario o entidad
-			cPerJuridica: filtros.campus || '0',  // Código de la entidad jurídica
+			idReclamo: '0',
+			cpercodigo: this.codigo,
+			cPerJuridica: filtros.campus || '0',
 			dFechaInicio: filtros.fechaInicio ? filtros.fechaInicio.toISOString().split('T')[0] : '',
 			dFechaFin: filtros.fechaFin ? filtros.fechaFin.toISOString().split('T')[0] : '',
-			cTipoReclamo: '30',  // Tipo de reclamo, valor fijo como en el ejemplo
-			cEstadoReclamo: '0',  // Estado del reclamo, valor fijo
-			pagination: {  // Parámetros de paginación
+			cTipoReclamo: '30',
+			cEstadoReclamo: '0',
+			pagination: {
 				pageIndex: 1,
 				pageSize: 100,
 				totalRows: 0,
-			}
+			},
 		};
-
-		console.log('Enviando filtro:', filtro);
 
 		this.reclamosService.getReclamos(filtro).subscribe({
 			next: (data: any) => {
-				this.dataSource.data = data.lstItem || [];  // Asignar los resultados al dataSource
-				console.log('Resultados de búsqueda:', this.dataSource.data);
+				this.dataSource.data = data.lstItem || [];
 			},
 			error: (error) => {
 				console.error('Error al buscar reclamos detallados:', error);
@@ -173,13 +174,14 @@ export class ListReclamosComponent implements AfterViewInit, OnInit {
 		});
 	}
 
-
+	// Método para abrir el historial de reclamos en un modal
 	openHistorial(element: Reclamo): void {
 		this.dialog.open(ModalHistorialComponent, {
 			data: element,
 		});
 	}
 
+	// Método para abrir el detalle de reclamo en un modal
 	openDetalle(element: Reclamo): void {
 		this.dialog.open(ModalContentComponent, {
 			data: element,
