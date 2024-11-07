@@ -30,8 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 	],
 })
 export class ListReclamosComponent implements AfterViewInit, OnInit, OnChanges {
-	@Input()
-	public codigo!: string;
+	@Input() public codigo!: string;
 
 	@Input()
 	public set filtros(filtros: { campus: string; fechaInicio: Date; fechaFin: Date }) {
@@ -58,21 +57,6 @@ export class ListReclamosComponent implements AfterViewInit, OnInit, OnChanges {
 
 	@ViewChild(MatPaginator) public paginator!: MatPaginator;
 
-	public filtro = {
-		idReclamo: '0',
-		cpercodigo: '',
-		cPerJuridica: '0',
-		dFechaInicio: '2024-01-01',
-		dFechaFin: '2024-10-10',
-		cTipoReclamo: '30',
-		cEstadoReclamo: '0',
-		pagination: {
-			pageIndex: 1,
-			pageSize: 10,
-			totalRows: 0,
-		},
-	};
-
 	constructor(
 		private reclamosService: ReclamosService,
 		private universidadService: UniversidadService,
@@ -81,15 +65,13 @@ export class ListReclamosComponent implements AfterViewInit, OnInit, OnChanges {
 
 	ngOnInit(): void {
 		this.loadCampusNames();
-		this.loadReclamos();
 	}
 
 	ngOnChanges(changes: SimpleChanges): void {
 		// Detecta cambios en el valor de `codigo`
 		if (changes['codigo'] && changes['codigo'].currentValue) {
-			this.filtro.cpercodigo = changes['codigo'].currentValue; // Actualiza cpercodigo en el filtro
 			this.loadCampusNames();
-			this.loadReclamos();
+			// No llama a `loadReclamos` para evitar carga innecesaria
 		}
 	}
 
@@ -100,7 +82,7 @@ export class ListReclamosComponent implements AfterViewInit, OnInit, OnChanges {
 	// Cargar nombres de los campus usando el código de usuario dinámico
 	loadCampusNames(): void {
 		const filtro = {
-			vcPerCodigo: this.filtro.cpercodigo,
+			vcPerCodigo: this.codigo,
 			vnModuloId: 2,
 			vnEsAutorizado: 0,
 			vnTipoCurricula: 0,
@@ -124,42 +106,19 @@ export class ListReclamosComponent implements AfterViewInit, OnInit, OnChanges {
 		});
 	}
 
-	// Cargar reclamos usando el filtro actualizado
-	loadReclamos(): void {
-		this.reclamosService.getReclamos(this.filtro).subscribe({
-			next: (data: any) => {
-				this.dataSource.data = data.lstItem || [];
-			},
-			error: (error) => {
-				console.error('Error al obtener los reclamos', error);
-			},
-		});
-	}
-
-	// Búsqueda de un reclamo específico usando `codigo`
-	buscarReclamoPorCodigo(codigo: string): void {
-		const filtro = { ...this.filtro, idReclamo: codigo };
-		this.reclamosService.getReclamos(filtro).subscribe({
-			next: (data: any) => {
-				this.dataSource.data = data.lstItem || [];
-			},
-			error: (error) => console.error('Error al buscar reclamo por código', error),
-		});
-	}
-
 	// Búsqueda detallada usando `filtros`
 	buscarReclamosDetallados(filtros: { campus: string; fechaInicio: Date; fechaFin: Date }): void {
 		const filtro = {
 			idReclamo: '0',
 			cpercodigo: this.codigo,
 			cPerJuridica: filtros.campus || '0',
-			dFechaInicio: filtros.fechaInicio ? filtros.fechaInicio.toISOString().split('T')[0] : '',
-			dFechaFin: filtros.fechaFin ? filtros.fechaFin.toISOString().split('T')[0] : '',
+			dFechaInicio: filtros.fechaInicio.toISOString().split('T')[0],
+			dFechaFin: filtros.fechaFin.toISOString().split('T')[0],
 			cTipoReclamo: '30',
 			cEstadoReclamo: '0',
 			pagination: {
 				pageIndex: 1,
-				pageSize: 100,
+				pageSize: 100,  // Listar todos los reclamos sin límite de páginas
 				totalRows: 0,
 			},
 		};

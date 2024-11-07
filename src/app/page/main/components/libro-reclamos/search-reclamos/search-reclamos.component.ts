@@ -1,21 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-	Component,
-	OnInit,
-	EventEmitter,
-	Output,
-	Input,
-	effect,
-	OnChanges,
-	SimpleChanges,
-} from '@angular/core';
-import {
-	FormsModule,
-	ReactiveFormsModule,
-	FormBuilder,
-	FormGroup,
-	Validators,
-} from '@angular/forms';
+import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { FormsModule, ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatInputModule } from '@angular/material/input';
@@ -28,7 +13,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { Universidad } from '../../../interface/universidades';
 import { UniversidadService } from '../../../services/universidades.service';
-import { MainSharedService } from '@shared/services/main-shared.service';
 
 @Component({
 	selector: 'app-search-reclamos',
