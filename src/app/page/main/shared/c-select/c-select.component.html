@@ -2,11 +2,10 @@
 	<mat-label for="nameInput">{{ label }}</mat-label>
 	<mat-form-field appearance="outline" class="w-full bg-white rounded-md border border-gray-300">
 		<mat-select [placeholder]="placeholder" [id]="id" class="text-gray-800">
-			@if (codigo && datosSelect.length > 0) {
-				@for (dato of datosSelect; track dato.value) {
-					<mat-option [value]="dato.value">{{ dato.viewValue }}</mat-option>
-				}
-			} @else {
+			@for (dato of datosSelect; track dato.value) {
+				<mat-option [value]="dato.value">{{ dato.viewValue }}</mat-option>
+			}
+			@empty {
 				<mat-option disabled>No hay opciones disponibles</mat-option>
 			}
 		</mat-select>
