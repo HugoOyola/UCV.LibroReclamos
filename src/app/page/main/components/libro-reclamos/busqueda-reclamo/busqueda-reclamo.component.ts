@@ -17,6 +17,7 @@ import { CCalendarComponent } from "../../../shared/c-calendar/c-calendar.compon
 import { CSelectComponent } from '../../../shared/c-select/c-select.component';
 import { CRadioComponent } from "../../../shared/c-radio/c-radio.component";
 import { CInputComponent } from '../../../shared/c-input/c-input.component';
+import { CButtonComponent } from '../../../shared/c-button/c-button.component';
 
 
 @Component({
@@ -39,11 +40,20 @@ import { CInputComponent } from '../../../shared/c-input/c-input.component';
     CSelectComponent,
     CCalendarComponent,
     CRadioComponent,
-    CInputComponent
-],
+    CInputComponent,
+    CButtonComponent
+  ],
   templateUrl: './busqueda-reclamo.component.html',
   styleUrl: './busqueda-reclamo.component.scss'
 })
 export class BusquedaReclamoComponent {
   @Input() public codigo: string = '';
+
+  handleSearch(): void {
+    console.log("Buscar");
+  }
+
+  handleClear(): void {
+    console.log("Limpiar");
+  }
 }

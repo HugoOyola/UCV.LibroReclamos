@@ -27,15 +27,20 @@
 			</div>
 
 			<!-- Botón de búsqueda y limpiar -->
-			<div class="flex justify-end space-x-4 mt-4">
-				<button mat-raised-button color="primary" class="btn-primary">
-					<mat-icon class="material-icons-round mr-2">search</mat-icon>
-					<span>Buscar</span>
-				</button>
-				<button mat-raised-button color="accent" class="btn-primary">
-					<mat-icon class="material-icons-round mr-2">delete</mat-icon>
-					<span>Limpiar</span>
-				</button>
+			<div class="flex justify-end space-x-4 align-bottom">
+				<app-c-button
+					icon="search"
+					label="Buscar"
+					color="primary"
+					(clicked)="handleSearch()"> <!-- Cambiado de (onClick) a (clicked) -->
+				</app-c-button>
+
+				<app-c-button
+					icon="delete"
+					label="Limpiar"
+					color="accent"
+					(clicked)="handleClear()"> <!-- Cambiado de (onClick) a (clicked) -->
+				</app-c-button>
 			</div>
 		</form>
 	</mat-tab>
@@ -48,14 +53,19 @@
 				<app-c-input [placeholder]="'Ingrese código'" [label]="'Ingrese código del reclamo'"></app-c-input>
 				<!-- Botones de búsqueda y limpiar -->
 				<div class="flex justify-end space-x-4 align-bottom">
-					<button mat-raised-button color="primary" class="btn-primary">
-						<mat-icon class="material-icons-round mr-2">search</mat-icon>
-						<span>Buscar</span>
-					</button>
-					<button mat-raised-button color="accent" class="btn-primary">
-						<mat-icon class="material-icons-round mr-2">delete</mat-icon>
-						<span>Limpiar</span>
-					</button>
+					<app-c-button
+						icon="search"
+						label="Buscar"
+						color="primary"
+						(clicked)="handleSearch()"> <!-- Cambiado de (onClick) a (clicked) -->
+					</app-c-button>
+
+					<app-c-button
+						icon="delete"
+						label="Limpiar"
+						color="accent"
+						(clicked)="handleClear()"> <!-- Cambiado de (onClick) a (clicked) -->
+					</app-c-button>
 				</div>
 			</div>
 		</form>
