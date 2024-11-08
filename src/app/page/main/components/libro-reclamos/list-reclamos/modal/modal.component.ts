@@ -2,11 +2,12 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { Reclamo } from '../../../../interface/reclamo';
+import { CSelectComponent } from 'src/app/page/main/shared/c-select/c-select.component';
 
 @Component({
 	selector: 'app-modal-content',
 	standalone: true,
-	imports: [CommonModule, MatDialogModule],
+	imports: [CommonModule, MatDialogModule, CSelectComponent],
 	template: `
 		<div class="p-0 max-w-lg mx-auto bg-white rounded-lg shadow-lg">
 			<!-- Título con franja -->
@@ -17,6 +18,7 @@ import { Reclamo } from '../../../../interface/reclamo';
 			<!-- Contenido del modal -->
 			<mat-dialog-content class="px-6 py-4 overflow-y-auto max-h-[50vh]">
 				<div class="grid grid-cols-1 gap-4 text-gray-800">
+					<app-c-select 						[label]="'Estado'" 						[placeholder]="'Selecciona un estado'" 						[apiType]="'options'" 					></app-c-select>
 					<p><strong>ID Reclamo:</strong> {{ data.idreclamo }}</p>
 					<p><strong>Nombre:</strong> {{ data.cRecNombre }}</p>
 					<p><strong>DNI:</strong> {{ data.cRecDni }}</p>
@@ -50,5 +52,5 @@ import { Reclamo } from '../../../../interface/reclamo';
 	`,
 })
 export class ModalContentComponent {
-	constructor(@Inject(MAT_DIALOG_DATA) public data: Reclamo) {}
+	constructor(@Inject(MAT_DIALOG_DATA) public data: Reclamo) { }
 }
