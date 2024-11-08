@@ -49,8 +49,12 @@ import { CButtonComponent } from '../../../shared/c-button/c-button.component';
 export class BusquedaReclamoComponent {
   @Input() public codigo: string = '';
 
-  handleSearch(): void {
-    console.log("Buscar");
+  handleBusquedaDetallada(): void {
+    console.log("Buscar Detallada");
+  }
+
+  handleBusquedaCodigo(): void {
+    console.log("Busqueda por codigo");
   }
 
   handleClear(): void {
