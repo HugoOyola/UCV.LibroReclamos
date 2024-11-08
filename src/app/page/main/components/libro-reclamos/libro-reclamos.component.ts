@@ -3,17 +3,18 @@ import { SearchReclamosComponent } from './search-reclamos/search-reclamos.compo
 import { ListReclamosComponent } from './list-reclamos/list-reclamos.component';
 import { MainSharedService } from '@shared/services/main-shared.service';
 import { BusquedaReclamoComponent } from "./busqueda-reclamo/busqueda-reclamo.component";
+import { ListadoReclamoComponent } from "./listado-reclamo/listado-reclamo.component";
 
 @Component({
 	selector: 'app-libro-reclamo',
 	standalone: true,
-	imports: [ BusquedaReclamoComponent ],
+	imports: [BusquedaReclamoComponent, ListadoReclamoComponent],
 	templateUrl: './libro-reclamos.component.html',
 	styleUrls: ['./libro-reclamos.component.scss'],
 })
 export class LibroReclamosComponent {
 	public codigo: string = '';
-	public filtros!: { campus: string; fechaInicio: Date; fechaFin: Date };
+	public filtros: { campus: string; fechaInicio: Date; fechaFin: Date; tipo: string } | null = null;
 
 	private mainSharedService = inject(MainSharedService);
 
