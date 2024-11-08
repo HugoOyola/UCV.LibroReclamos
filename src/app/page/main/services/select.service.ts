@@ -33,9 +33,9 @@ export class SelectService {
     );
   }
 
-  getSedesOptions(): Observable<{ value: string; viewValue: string }[]> {
+  getSedesOptions(vcPerCodigo: string): Observable<{ value: string; viewValue: string }[]> {
     return this.http.post<ApiSedesResponse>(this.sedesApiUrl, {
-      vcPerCodigo: '7000090106',
+      vcPerCodigo, // Ahora recibe vcPerCodigo como argumento
       vnModuloId: 3,
       vnEsAutorizado: 1,
       vnTipoCurricula: 0,
@@ -54,7 +54,7 @@ export class SelectService {
     );
   }
 
-  getData(apiType: 'options' | 'sedes'): Observable<{ value: string; viewValue: string }[]> {
-    return apiType === 'options' ? this.getOptions() : this.getSedesOptions();
+  getData(apiType: 'options' | 'sedes', vcPerCodigo?: string): Observable<{ value: string; viewValue: string }[]> {
+    return apiType === 'options' ? this.getOptions() : this.getSedesOptions(vcPerCodigo || '');
   }
 }

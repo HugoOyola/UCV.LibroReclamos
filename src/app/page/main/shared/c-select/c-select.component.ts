@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,19 +17,42 @@ interface ComponentSelect {
   templateUrl: './c-select.component.html',
   styleUrl: './c-select.component.scss'
 })
-export class CSelectComponent implements OnInit {
+export class CSelectComponent implements OnInit, OnChanges {
+  @Input() public codigo: string = '';
   @Input() public label: string = '';
   @Input() public placeholder: string = '';
   @Input() public id: string = '';
-  @Input() public apiType: 'options' | 'sedes' = 'options';  // Define el tipo de API a usar
+  @Input() public apiType: 'options' | 'sedes' = 'options';
 
   public datosSelect: ComponentSelect[] = [];
 
-  constructor(private selectService: SelectService) { }
+  constructor(private selectService: SelectService) {}
 
   ngOnInit(): void {
-    this.selectService.getData(this.apiType).subscribe((data) => {
-      this.datosSelect = data;
-    });
+    // Cargar opciones iniciales en caso de que ya exista un código
+    this.loadOptions();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    // Detectar cambios en `codigo` y cargar datos si ha cambiado
+    if (changes['codigo'] && changes['codigo'].currentValue) {
+      this.loadOptions();
+    }
+  }
+
+  private loadOptions(): void {
+    // Llama a `getData` solo si `codigo` tiene un valor
+    if (this.codigo) {
+      this.selectService.getData(this.apiType, this.codigo).subscribe(
+        (data) => {
+          this.datosSelect = data;
+        },
+        () => {
+          this.datosSelect = []; // En caso de error, vaciar la lista de opciones
+        }
+      );
+    } else {
+      this.datosSelect = []; // Vaciar si `codigo` es vacío o nulo
+    }
   }
 }
