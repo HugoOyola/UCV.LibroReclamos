@@ -1,0 +1,11 @@
+<div class="flexInput">
+  <mat-label>{{ label }}</mat-label>
+  <mat-form-field appearance="outline" class="mfl">
+    <mat-date-range-input [rangePicker]="picker">
+      <input matInput matStartDate [placeholder]="placeholderIni">
+      <input matInput matEndDate [placeholder]="placeholderFin">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+</div>
