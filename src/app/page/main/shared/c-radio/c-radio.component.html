@@ -1,7 +1,7 @@
 <div class="flex flex-col gap-2 w-full">
   <mat-label>{{ label }}</mat-label>
   <div class="w-full">
-    <mat-radio-group [(ngModel)]="selectedValue" class="w-full">
+      <mat-radio-group [(ngModel)]="selectedValue" (change)="onSelectionChange()" class="w-full">
       @for (option of radioOptions; track option.value) {
         <mat-radio-button [value]="option.value" class="w-full">{{ option.viewValue }}</mat-radio-button>
       }

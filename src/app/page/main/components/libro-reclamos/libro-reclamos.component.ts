@@ -27,4 +27,17 @@ export class LibroReclamosComponent {
 			}
 		});
 	}
+
+	onBuscar(event: { startDate: Date | null; endDate: Date | null; tipoReclamo: string }): void {
+		const formattedStartDate = event.startDate
+			? event.startDate.toLocaleDateString('en-CA')
+			: null;
+		const formattedEndDate = event.endDate
+			? event.endDate.toLocaleDateString('en-CA')
+			: null;
+
+		console.log('Fecha de Inicio:', formattedStartDate);
+		console.log('Fecha de Fin:', formattedEndDate);
+		console.log('Tipo de Reclamo:', event.tipoReclamo);
+	}
 }
