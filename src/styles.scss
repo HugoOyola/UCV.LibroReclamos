@@ -4,6 +4,7 @@
 @import url(./themes/_matFormt.scss);
 @import url(./themes/_matDialog.scss);
 @import url(./themes/_table.scss);
+@import url(./styles-material.scss);
 :root {
 	--primary: #233559;
 	--accent: #d32f2f;
@@ -38,7 +39,7 @@ body {
 	position: relative;
 	letter-spacing: normal;
 	font-family:
-		'Inter var',
+		"Inter var",
 		ui-sans-serif,
 		system-ui,
 		-apple-system,
@@ -49,13 +50,13 @@ body {
 		Arial,
 		Noto Sans,
 		sans-serif,
-		'Apple Color Emoji',
-		'Segoe UI Emoji',
+		"Apple Color Emoji",
+		"Segoe UI Emoji",
 		Segoe UI Symbol,
-		'Noto Color Emoji';
-	font-feature-settings: 'salt' !important;
-	-webkit-font-feature-settings: 'salt' !important;
-	-moz-font-feature-settings: 'salt' !important;
+		"Noto Color Emoji";
+	font-feature-settings: "salt" !important;
+	-webkit-font-feature-settings: "salt" !important;
+	-moz-font-feature-settings: "salt" !important;
 }
 @layer components {
 	.card {
