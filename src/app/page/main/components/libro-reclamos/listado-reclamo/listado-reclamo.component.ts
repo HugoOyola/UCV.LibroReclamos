@@ -58,7 +58,7 @@ export class ListadoReclamoComponent implements AfterViewInit {
       cTipoReclamo: "30",
       cEstadoReclamo: "0",
       pagination: {
-        pageIndex: pageIndex + 1, // Incrementa para la API (si es base 1)
+        pageIndex: pageIndex + 1, // Increment for API (1-based)
         pageSize: pageSize,
         totalRows: 0,
       }
@@ -66,11 +66,11 @@ export class ListadoReclamoComponent implements AfterViewInit {
 
     this.reclamoService.getReclamos(requestBody).subscribe(response => {
       if (response.isSuccess) {
-        this.reclamos = response.lstItem; // Cargar datos manualmente
-        this.totalRows = response.pagination.totalRows; // Establecer el total de filas
-        this.paginator.pageIndex = pageIndex; // Asegurar el pageIndex correcto
+        this.reclamos = response.lstItem; // Manually load data
+        this.totalRows = response.pagination.totalRows; // Set total rows
+        this.paginator.pageIndex = pageIndex; // Ensure correct pageIndex
       } else {
-        console.error('Error al obtener los reclamos:', response.lstError);
+        console.error('Error fetching reclamos:', response.lstError);
       }
     });
   }
@@ -78,7 +78,7 @@ export class ListadoReclamoComponent implements AfterViewInit {
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.loadReclamos(this.pageIndex, this.pageSize); // Cargar datos de la nueva página
+    this.loadReclamos(this.pageIndex, this.pageSize); // Load data for the new page
   }
 
   downloadFile(fileId: string): void {
