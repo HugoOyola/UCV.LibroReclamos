@@ -1,6 +1,6 @@
 import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PageEvent } from '@angular/material/paginator';
@@ -45,7 +45,12 @@ export class ListadoReclamoComponent implements AfterViewInit {
   @ViewChild(MatPaginator) public paginator!: MatPaginator;
 
   ngAfterViewInit(): void {
-    this.loadReclamos(this.pageIndex, this.pageSize);
+    if (this.paginator) {
+      this.loadReclamos(this.pageIndex, this.pageSize);
+    } else {
+      // Si paginator no está disponible inmediatamente, espera un pequeño retraso antes de intentar nuevamente.
+      setTimeout(() => this.loadReclamos(this.pageIndex, this.pageSize), 100);
+    }
   }
 
   loadReclamos(pageIndex: number, pageSize: number): void {
@@ -66,9 +71,13 @@ export class ListadoReclamoComponent implements AfterViewInit {
 
     this.reclamoService.getReclamos(requestBody).subscribe(response => {
       if (response.isSuccess) {
-        this.reclamos = response.lstItem; // Manually load data
-        this.totalRows = response.pagination.totalRows; // Set total rows
-        this.paginator.pageIndex = pageIndex; // Ensure correct pageIndex
+        this.reclamos = response.lstItem;
+        this.totalRows = response.pagination.totalRows;
+
+        // Verifica que paginator esté definido antes de asignar el pageIndex
+        if (this.paginator) {
+          this.paginator.pageIndex = pageIndex;
+        }
       } else {
         console.error('Error fetching reclamos:', response.lstError);
       }
