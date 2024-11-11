@@ -21,7 +21,7 @@ import { ReclamoData } from '../../../interface/reclamosdata';
   styleUrl: './listado-reclamo.component.scss'
 })
 
-export class ListadoReclamoComponent implements AfterViewInit, OnChanges {
+export class ListadoReclamoComponent implements OnChanges {
   @Input() public filtros?: { campus: string; startDate: Date | null; endDate: Date | null; tipoReclamo: string } | null;
   @Input() public codigo!: string;
 
@@ -34,35 +34,39 @@ export class ListadoReclamoComponent implements AfterViewInit, OnChanges {
   public totalRows = 0;
   public pageSize = 10;
   public pageIndex = 0;
+  public loading = true;
+  public isFirstLoad = true; // Nueva variable para controlar el primer estado de carga
 
   @ViewChild(MatPaginator) public paginator!: MatPaginator;
 
-  ngAfterViewInit(): void {
-    if (this.paginator) {
-      this.loadReclamos();
-    }
-  }
+  // ngAfterViewInit(): void {
+  //   if (this.paginator) {
+  //     this.loadReclamos();
+  //   }
+  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     // Verificar si `filtros` tiene un valor válido después de hacer clic en buscar
     if (changes['filtros'] && changes['filtros'].currentValue) {
+      this.isFirstLoad = false; // Cambiar después de la primera carga
       this.loadReclamos();
     }
   }
 
   loadReclamos(): void {
+    this.loading = true;
     if (!this.filtros) {
-      return; // Salir si filtros es null o undefined
+      return;
     }
 
-    const today = new Date().toLocaleDateString('en-CA'); // Fecha actual en formato 'YYYY-MM-DD'
+    const today = new Date().toLocaleDateString('en-CA');
 
     const requestBody = {
       idReclamo: "0",
       cpercodigo: this.codigo,
       cPerJuridica: this.filtros.campus || "0",
       dFechaInicio: this.filtros.startDate ? this.filtros.startDate.toLocaleDateString('en-CA') : "2024-10-01",
-      dFechaFin: this.filtros.endDate ? this.filtros.endDate.toLocaleDateString('en-CA') : today,  // Usa hoy si no se especifica fecha de fin
+      dFechaFin: this.filtros.endDate ? this.filtros.endDate.toLocaleDateString('en-CA') : today,
       cTipoReclamo: this.filtros.tipoReclamo || "30",
       cEstadoReclamo: "0",
       pagination: {
@@ -76,19 +80,16 @@ export class ListadoReclamoComponent implements AfterViewInit, OnChanges {
 
     this.reclamoService.getReclamos(requestBody).subscribe(
       response => {
-        if (response.isSuccess) {
-          this.reclamos = response.lstItem;
-          this.totalRows = response.pagination.totalRows;
-        } else {
-          console.error('Error fetching reclamos:', response.lstError);
-        }
+        this.reclamos = response.isSuccess ? response.lstItem : [];
+        this.totalRows = response.pagination.totalRows;
+        this.loading = false;
       },
       error => {
         console.error('Error en la solicitud:', error);
+        this.loading = false;
       }
     );
   }
-
 
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;

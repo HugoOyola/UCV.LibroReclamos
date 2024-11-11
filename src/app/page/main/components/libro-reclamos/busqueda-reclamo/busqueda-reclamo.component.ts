@@ -75,13 +75,7 @@ export class BusquedaReclamoComponent {
   }
 
   // Método que emite todos los valores cuando se hace clic en el botón de búsqueda
-  handleBusquedaDetallada(): void {
-    // console.log("Buscar Detallada");
-    // console.log("Campus Seleccionado:", this.campusSelected);
-    // console.log("Fecha de Inicio seleccionada:", this.startDate);
-    // console.log("Fecha de Fin seleccionada:", this.endDate);
-    // console.log("Tipo de Reclamo seleccionado:", this.tipoReclamo);
-
+   handleBusquedaDetallada(): void {
     this.buscar.emit({
       campus: this.campusSelected,
       startDate: this.startDate,
