@@ -14,8 +14,12 @@ import { ListadoReclamoComponent } from "./listado-reclamo/listado-reclamo.compo
 })
 export class LibroReclamosComponent {
 	public codigo: string = '';
-	public filtros: { campus: string; fechaInicio: Date; fechaFin: Date; tipo: string } | null = null;
-
+	public filtros: { campus: string; startDate: Date | null; endDate: Date | null; tipoReclamo: string } = {
+		campus: '',
+		startDate: null,
+		endDate: null,
+		tipoReclamo: ''
+	};
 	private mainSharedService = inject(MainSharedService);
 
 	constructor() {
@@ -28,17 +32,18 @@ export class LibroReclamosComponent {
 		});
 	}
 
+	// Método que maneja la emisión de filtros desde BusquedaReclamoComponent
 	onBuscar(event: { startDate: Date | null; endDate: Date | null; tipoReclamo: string; campus: string }): void {
-		const formattedStartDate = event.startDate
-			? event.startDate.toLocaleDateString('en-CA')
-			: null;
-		const formattedEndDate = event.endDate
-			? event.endDate.toLocaleDateString('en-CA')
-			: null;
+		// Formatear las fechas para enviarlas correctamente al listado
+		const formattedStartDate = event.startDate ? event.startDate.toLocaleDateString('en-CA') : null;
+		const formattedEndDate = event.endDate ? event.endDate.toLocaleDateString('en-CA') : null;
 
-		console.log('Campus:', event.campus);
-		console.log('Fecha de Inicio:', formattedStartDate);
-		console.log('Fecha de Fin:', formattedEndDate);
-		console.log('Tipo de Reclamo:', event.tipoReclamo);
+		// Asignar los filtros solo después de hacer clic en buscar
+		this.filtros = {
+			campus: event.campus,
+			startDate: formattedStartDate ? new Date(formattedStartDate) : null,
+			endDate: formattedEndDate ? new Date(formattedEndDate) : null,
+			tipoReclamo: event.tipoReclamo,
+		};
 	}
 }

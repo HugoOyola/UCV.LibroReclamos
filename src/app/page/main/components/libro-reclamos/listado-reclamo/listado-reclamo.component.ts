@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, inject, Input, SimpleChanges, OnChanges } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,21 +21,14 @@ import { ReclamoData } from '../../../interface/reclamosdata';
   styleUrl: './listado-reclamo.component.scss'
 })
 
-export class ListadoReclamoComponent implements AfterViewInit {
+export class ListadoReclamoComponent implements AfterViewInit, OnChanges {
+  @Input() public filtros?: { campus: string; startDate: Date | null; endDate: Date | null; tipoReclamo: string } | null;
+  @Input() public codigo!: string;
+
   private reclamoService = inject(ReclamoApiService);
 
   public displayedColumns: string[] = [
-    'idreclamo',
-    'cRecNombre',
-    'cRecDni',
-    'cRecFecha',
-    'cRecEmail',
-    'cPerJuridica',
-    'arch',
-    'tipo',
-    'reenviar',
-    'modelo',
-    'accion',
+    'idreclamo', 'cRecNombre', 'cRecDni', 'cRecFecha', 'cRecEmail', 'cPerJuridica', 'arch', 'tipo', 'reenviar', 'modelo', 'accion',
   ];
   public reclamos: ReclamoData[] = [];
   public totalRows = 0;
@@ -46,48 +39,60 @@ export class ListadoReclamoComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     if (this.paginator) {
-      this.loadReclamos(this.pageIndex, this.pageSize);
-    } else {
-      // Si paginator no está disponible inmediatamente, espera un pequeño retraso antes de intentar nuevamente.
-      setTimeout(() => this.loadReclamos(this.pageIndex, this.pageSize), 100);
+      this.loadReclamos();
     }
   }
 
-  loadReclamos(pageIndex: number, pageSize: number): void {
+  ngOnChanges(changes: SimpleChanges): void {
+    // Verificar si `filtros` tiene un valor válido después de hacer clic en buscar
+    if (changes['filtros'] && changes['filtros'].currentValue) {
+      this.loadReclamos();
+    }
+  }
+
+  loadReclamos(): void {
+    if (!this.filtros) {
+      return; // Salir si filtros es null o undefined
+    }
+
+    // Estructura correcta del requestBody según el ejemplo que has proporcionado
     const requestBody = {
-      idReclamo: "0",
-      cpercodigo: "7000090106",
-      cPerJuridica: "0",
-      dFechaInicio: "2024-09-01",
-      dFechaFin: "2024-10-10",
-      cTipoReclamo: "30",
-      cEstadoReclamo: "0",
+      idReclamo: "0",  // Aseguramos un valor por defecto
+      cpercodigo: this.codigo,
+      cPerJuridica: this.filtros.campus || "0",  // Enviar "0" si no hay campus seleccionado
+      dFechaInicio: this.filtros.startDate ? this.filtros.startDate.toLocaleDateString('en-CA') : "",  // Fecha por defecto o lo que el usuario seleccione
+      dFechaFin: this.filtros.endDate ? this.filtros.endDate.toLocaleDateString('en-CA') : "",  // Fecha por defecto o lo que el usuario seleccione
+      cTipoReclamo: this.filtros.tipoReclamo || "30",  // Tipo por defecto o lo que el usuario seleccione
+      cEstadoReclamo: "0",  // Valor por defecto
       pagination: {
-        pageIndex: pageIndex + 1, // Increment for API (1-based)
-        pageSize: pageSize,
-        totalRows: 0,
+        pageIndex: this.pageIndex + 1,
+        pageSize: this.pageSize,
+        totalRows: 0
       }
     };
 
-    this.reclamoService.getReclamos(requestBody).subscribe(response => {
-      if (response.isSuccess) {
-        this.reclamos = response.lstItem;
-        this.totalRows = response.pagination.totalRows;
+    // Log para verificar que requestBody cumple con la estructura requerida
+    console.log('Request Body:', requestBody);
 
-        // Verifica que paginator esté definido antes de asignar el pageIndex
-        if (this.paginator) {
-          this.paginator.pageIndex = pageIndex;
+    this.reclamoService.getReclamos(requestBody).subscribe(
+      response => {
+        if (response.isSuccess) {
+          this.reclamos = response.lstItem;
+          this.totalRows = response.pagination.totalRows;
+        } else {
+          console.error('Error fetching reclamos:', response.lstError);
         }
-      } else {
-        console.error('Error fetching reclamos:', response.lstError);
+      },
+      error => {
+        console.error('Error en la solicitud:', error);
       }
-    });
+    );
   }
 
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
-    this.loadReclamos(this.pageIndex, this.pageSize); // Load data for the new page
+    this.loadReclamos();
   }
 
   downloadFile(fileId: string): void {

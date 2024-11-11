@@ -1,5 +1,10 @@
 <app-busqueda-reclamo [codigo]="codigo" (buscar)="onBuscar($event)"></app-busqueda-reclamo>
-<app-listado-reclamo class="card mt-4"></app-listado-reclamo>
+<app-listado-reclamo
+  [filtros]="filtros"
+  [codigo]="codigo"
+  class="card mt-4">
+</app-listado-reclamo>
+
 <!-- <app-search-reclamos
   [codigo]="codigo"
   (codigoBuscado)="codigo = $event"
