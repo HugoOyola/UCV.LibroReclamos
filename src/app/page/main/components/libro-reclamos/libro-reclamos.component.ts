@@ -1,6 +1,4 @@
 import { Component, inject, effect } from '@angular/core';
-import { SearchReclamosComponent } from './search-reclamos/search-reclamos.component';
-import { ListReclamosComponent } from './list-reclamos/list-reclamos.component';
 import { MainSharedService } from '@shared/services/main-shared.service';
 import { BusquedaReclamoComponent } from "./busqueda-reclamo/busqueda-reclamo.component";
 import { ListadoReclamoComponent } from "./listado-reclamo/listado-reclamo.component";
