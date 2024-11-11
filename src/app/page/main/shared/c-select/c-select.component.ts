@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -23,7 +23,7 @@ export class CSelectComponent implements OnInit, OnChanges {
   @Input() public placeholder: string = '';
   @Input() public id: string = '';
   @Input() public apiType: 'options' | 'sedes' = 'options'; // Define el tipo de API a usar
-
+  @Output() public selectedValueChange = new EventEmitter<string>(); // Nuevo Output para emitir el valor seleccionado
 
   public datosSelect: ComponentSelect[] = [];
 
@@ -55,5 +55,9 @@ export class CSelectComponent implements OnInit, OnChanges {
     } else {
       this.datosSelect = []; // Vaciar si codigo es vacío o nulo
     }
+  }
+
+  onOptionSelected(value: string): void {
+    this.selectedValueChange.emit(value); // Emitir el valor seleccionado
   }
 }

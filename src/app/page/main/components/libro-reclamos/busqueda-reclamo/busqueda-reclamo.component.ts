@@ -48,11 +48,12 @@ import { CButtonComponent } from '../../../shared/c-button/c-button.component';
 })
 export class BusquedaReclamoComponent {
   @Input() public codigo: string = '';
-  @Output() public buscar = new EventEmitter<{ startDate: Date | null; endDate: Date | null; tipoReclamo: string }>();
+  @Output() public buscar = new EventEmitter<{ startDate: Date | null; endDate: Date | null; tipoReclamo: string; campus: string }>();
 
   @ViewChild(CCalendarComponent) public calendarComponent!: CCalendarComponent;
   @ViewChild(CRadioComponent) public radioComponent!: CRadioComponent;
 
+  public campusSelected: string = '';
   public startDate: Date | null = null;
   public endDate: Date | null = null;
   public tipoReclamo: string = '2';
@@ -68,14 +69,21 @@ export class BusquedaReclamoComponent {
     this.tipoReclamo = tipo;
   }
 
+   // Método para capturar el campus seleccionado del componente select
+  onCampusSelected(campus: string): void {
+    this.campusSelected = campus; // Asignar el valor seleccionado a campusSelected
+  }
+
   // Método que emite todos los valores cuando se hace clic en el botón de búsqueda
   handleBusquedaDetallada(): void {
-    console.log("Buscar Detallada");
-    console.log("Fecha de Inicio seleccionada:", this.startDate);
-    console.log("Fecha de Fin seleccionada:", this.endDate);
-    console.log("Tipo de Reclamo seleccionado:", this.tipoReclamo);
+    // console.log("Buscar Detallada");
+    // console.log("Campus Seleccionado:", this.campusSelected);
+    // console.log("Fecha de Inicio seleccionada:", this.startDate);
+    // console.log("Fecha de Fin seleccionada:", this.endDate);
+    // console.log("Tipo de Reclamo seleccionado:", this.tipoReclamo);
 
     this.buscar.emit({
+      campus: this.campusSelected,
       startDate: this.startDate,
       endDate: this.endDate,
       tipoReclamo: this.tipoReclamo
@@ -87,6 +95,7 @@ export class BusquedaReclamoComponent {
   }
 
   handleClear(): void {
+    this.campusSelected = '';
     this.startDate = null;
     this.endDate = null;
     this.tipoReclamo = '2';

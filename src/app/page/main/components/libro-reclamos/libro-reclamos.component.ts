@@ -28,7 +28,7 @@ export class LibroReclamosComponent {
 		});
 	}
 
-	onBuscar(event: { startDate: Date | null; endDate: Date | null; tipoReclamo: string }): void {
+	onBuscar(event: { startDate: Date | null; endDate: Date | null; tipoReclamo: string; campus: string }): void {
 		const formattedStartDate = event.startDate
 			? event.startDate.toLocaleDateString('en-CA')
 			: null;
@@ -36,6 +36,7 @@ export class LibroReclamosComponent {
 			? event.endDate.toLocaleDateString('en-CA')
 			: null;
 
+		console.log('Campus:', event.campus);
 		console.log('Fecha de Inicio:', formattedStartDate);
 		console.log('Fecha de Fin:', formattedEndDate);
 		console.log('Tipo de Reclamo:', event.tipoReclamo);
