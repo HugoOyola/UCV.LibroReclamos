@@ -1,24 +1,12 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-
-interface Reclamo {
-  idreclamo: string;
-  cRecNombre: string;
-  cRecDni: string;
-  cRecFecha: string;
-  cRecEmail: string;
-  cPerJuridica: string;
-  arch?: string;
-  tipo?: string;
-  reenviar?: string;
-  modelo?: string;
-  accion?: string;
-}
-
+import { ReclamoApiService } from '../../../services/reclamosdata.service';
+import { ReclamoData } from '../../../interface/reclamosdata';
 @Component({
   selector: 'app-listado-reclamo',
   standalone: true,
@@ -32,7 +20,10 @@ interface Reclamo {
   templateUrl: './listado-reclamo.component.html',
   styleUrl: './listado-reclamo.component.scss'
 })
+
 export class ListadoReclamoComponent implements AfterViewInit {
+  private reclamoService = inject(ReclamoApiService);
+
   public displayedColumns: string[] = [
     'idreclamo',
     'cRecNombre',
@@ -46,52 +37,60 @@ export class ListadoReclamoComponent implements AfterViewInit {
     'modelo',
     'accion',
   ];
-  public dataSource = new MatTableDataSource<Reclamo>([]);
-  public campusNames = {
-    'C1': 'Campus 1',
-    'C2': 'Campus 2',
-    // Add other mappings as needed
-  };
+  public reclamos: ReclamoData[] = [];
+  public totalRows = 0;
+  public pageSize = 10;
+  public pageIndex = 0;
 
   @ViewChild(MatPaginator) public paginator!: MatPaginator;
 
-  constructor() {
-    // Populate the dataSource with data
-    this.loadReclamos();
-  }
-
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator;
+    this.loadReclamos(this.pageIndex, this.pageSize);
   }
 
-  loadReclamos(): void {
-    // Replace with your actual data fetching logic
-    const reclamos: Reclamo[] = [
-      {
-        idreclamo: '001',
-        cRecNombre: 'John Doe',
-        cRecDni: '12345678',
-        cRecFecha: '2024-11-10',
-        cRecEmail: 'john.doe@example.com',
-        cPerJuridica: 'C1',
-        arch: 'file1.pdf',
-        tipo: 'Queja',
-        reenviar: '',
-        modelo: '',
-        accion: '',
-      },
-      // Add more dummy data as needed
-    ];
-    this.dataSource.data = reclamos;
+  loadReclamos(pageIndex: number, pageSize: number): void {
+    const requestBody = {
+      idReclamo: "0",
+      cpercodigo: "7000090106",
+      cPerJuridica: "0",
+      dFechaInicio: "2024-09-01",
+      dFechaFin: "2024-10-10",
+      cTipoReclamo: "30",
+      cEstadoReclamo: "0",
+      pagination: {
+        pageIndex: pageIndex + 1, // Incrementa para la API (si es base 1)
+        pageSize: pageSize,
+        totalRows: 0,
+      }
+    };
+
+    this.reclamoService.getReclamos(requestBody).subscribe(response => {
+      if (response.isSuccess) {
+        this.reclamos = response.lstItem; // Cargar datos manualmente
+        this.totalRows = response.pagination.totalRows; // Establecer el total de filas
+        this.paginator.pageIndex = pageIndex; // Asegurar el pageIndex correcto
+      } else {
+        console.error('Error al obtener los reclamos:', response.lstError);
+      }
+    });
   }
 
-  openDetalle(element: Reclamo): void {
+  onPageChange(event: PageEvent): void {
+    this.pageIndex = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadReclamos(this.pageIndex, this.pageSize); // Cargar datos de la nueva página
+  }
+
+  downloadFile(fileId: string): void {
+    const url = `https://ucvapiqa.azure-api.net/gdriveqa/Drive/ShowFile/${fileId}/2`;
+    window.open(url, '_blank');
+  }
+
+  openDetalle(element: ReclamoData): void {
     console.log('Opening details for:', element);
-    // Add your logic to open details
   }
 
-  openHistorial(element: Reclamo): void {
+  openHistorial(element: ReclamoData): void {
     console.log('Opening history for:', element);
-    // Add your logic to open history
   }
 }
