@@ -37,6 +37,7 @@ export class ListadoReclamoComponent implements OnChanges {
   public loading = true;
   public isFirstLoad = true; // Nueva variable para controlar el primer estado de carga
 
+
   @ViewChild(MatPaginator) public paginator!: MatPaginator;
 
   // ngAfterViewInit(): void {
@@ -46,9 +47,9 @@ export class ListadoReclamoComponent implements OnChanges {
   // }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // Verificar si `filtros` tiene un valor válido después de hacer clic en buscar
     if (changes['filtros'] && changes['filtros'].currentValue) {
-      this.isFirstLoad = false; // Cambiar después de la primera carga
+      this.isFirstLoad = false;
+      this.pageIndex = 0; // Resetear la página cuando se cambia la búsqueda
       this.loadReclamos();
     }
   }

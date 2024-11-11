@@ -124,9 +124,10 @@
     </table>
 
     <!-- Paginador -->
-    <mat-paginator class="pt-6" [length]="totalRows" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 20]"
-      showFirstLastButtons (page)="onPageChange($event)">
+    <mat-paginator class="pt-6" [length]="totalRows" [pageSize]="pageSize" [pageIndex]="pageIndex"
+      [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons (page)="onPageChange($event)">
     </mat-paginator>
+
 
   </div>
   } @else {
