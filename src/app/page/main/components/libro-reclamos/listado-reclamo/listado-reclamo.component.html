@@ -136,3 +136,18 @@
   </div>
   }
 </div>
+
+
+<!-- Plantilla para mostrar los detalles del reclamo -->
+<ng-template #detalleReclamoTemplate let-data="data">
+  <p><strong>ID Reclamo:</strong> {{ data.idreclamo }}</p>
+  <p><strong>Nombre:</strong> {{ data.cRecNombre }}</p>
+  <p><strong>DNI:</strong> {{ data.cRecDni }}</p>
+  <p><strong>Fecha Registro:</strong> {{ data.cRecFecha }}</p>
+  <p><strong>Teléfono:</strong> {{ data.cRecTelefono }}</p>
+  <p><strong>Correo:</strong> {{ data.cRecEmail }}</p>
+  <p><strong>Descripción:</strong> {{ data.cRecDescripcion }}</p>
+  <p><strong>Filial:</strong> {{ data.cPerJuridica }}</p>
+  <p><strong>Tipo de Reclamo:</strong> {{ data.cTipoReclamo }}</p>
+  <p><strong>Estado:</strong> {{ data.cEstadoReclamo }}</p>
+</ng-template>

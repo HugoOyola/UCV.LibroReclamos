@@ -1,4 +1,4 @@
-import { Component, ViewChild, AfterViewInit, inject, Input, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, inject, Input, SimpleChanges, OnChanges,TemplateRef } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
@@ -7,6 +7,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { ReclamoApiService } from '../../../services/reclamosdata.service';
 import { ReclamoData } from '../../../interface/reclamosdata';
+import { MatDialog } from '@angular/material/dialog';
+import { CModalComponent, ModalData } from '../../../shared/c-modal/c-modal.component';
 @Component({
   selector: 'app-listado-reclamo',
   standalone: true,
@@ -39,12 +41,15 @@ export class ListadoReclamoComponent implements OnChanges {
 
 
   @ViewChild(MatPaginator) public paginator!: MatPaginator;
+  @ViewChild('detalleReclamoTemplate') public detalleReclamoTemplate!: TemplateRef<any>;
 
   // ngAfterViewInit(): void {
   //   if (this.paginator) {
   //     this.loadReclamos();
   //   }
   // }
+
+  constructor(private dialog: MatDialog) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['filtros'] && changes['filtros'].currentValue) {
@@ -104,8 +109,17 @@ export class ListadoReclamoComponent implements OnChanges {
   }
 
   openDetalle(element: ReclamoData): void {
-    console.log('Opening details for:', element);
+    const data: ModalData = {
+      title: 'Detalle del Reclamo',
+      contentTemplate: this.detalleReclamoTemplate,
+      context: { data: element } // Proporciona el contexto para que `data` se refiera a `element`
+    };
+
+    this.dialog.open(CModalComponent, {
+      data
+    });
   }
+
 
   openHistorial(element: ReclamoData): void {
     console.log('Opening history for:', element);

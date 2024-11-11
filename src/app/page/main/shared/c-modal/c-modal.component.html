@@ -1,0 +1,15 @@
+<div class="h-[70vh] w-[94vw] max-w-[700px] max-h-[500px] flex flex-col">
+  <div class="flex flex-row justify-between items-center" mat-dialog-title>
+    <span class="text-base">{{ data.title }}</span>
+    <button mat-icon-button mat-dialog-close color="secundary">
+      <mat-icon class="material-icons-round">close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content>
+    <!-- Renderiza la plantilla dinámica con el contexto proporcionado -->
+    <ng-container *ngTemplateOutlet="data.contentTemplate; context: data.context"></ng-container>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="default" cdkFocusInitial>Cerrar</button>
+  </div>
+</div>
