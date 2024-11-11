@@ -55,15 +55,16 @@ export class ListadoReclamoComponent implements AfterViewInit, OnChanges {
       return; // Salir si filtros es null o undefined
     }
 
-    // Estructura correcta del requestBody según el ejemplo que has proporcionado
+    const today = new Date().toLocaleDateString('en-CA'); // Fecha actual en formato 'YYYY-MM-DD'
+
     const requestBody = {
-      idReclamo: "0",  // Aseguramos un valor por defecto
+      idReclamo: "0",
       cpercodigo: this.codigo,
-      cPerJuridica: this.filtros.campus || "0",  // Enviar "0" si no hay campus seleccionado
-      dFechaInicio: this.filtros.startDate ? this.filtros.startDate.toLocaleDateString('en-CA') : "",  // Fecha por defecto o lo que el usuario seleccione
-      dFechaFin: this.filtros.endDate ? this.filtros.endDate.toLocaleDateString('en-CA') : "",  // Fecha por defecto o lo que el usuario seleccione
-      cTipoReclamo: this.filtros.tipoReclamo || "30",  // Tipo por defecto o lo que el usuario seleccione
-      cEstadoReclamo: "0",  // Valor por defecto
+      cPerJuridica: this.filtros.campus || "0",
+      dFechaInicio: this.filtros.startDate ? this.filtros.startDate.toLocaleDateString('en-CA') : "2024-10-01",
+      dFechaFin: this.filtros.endDate ? this.filtros.endDate.toLocaleDateString('en-CA') : today,  // Usa hoy si no se especifica fecha de fin
+      cTipoReclamo: this.filtros.tipoReclamo || "30",
+      cEstadoReclamo: "0",
       pagination: {
         pageIndex: this.pageIndex + 1,
         pageSize: this.pageSize,
@@ -71,7 +72,6 @@ export class ListadoReclamoComponent implements AfterViewInit, OnChanges {
       }
     };
 
-    // Log para verificar que requestBody cumple con la estructura requerida
     console.log('Request Body:', requestBody);
 
     this.reclamoService.getReclamos(requestBody).subscribe(
@@ -88,6 +88,7 @@ export class ListadoReclamoComponent implements AfterViewInit, OnChanges {
       }
     );
   }
+
 
   onPageChange(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
