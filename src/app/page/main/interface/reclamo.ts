@@ -7,6 +7,7 @@ export interface Reclamo {
 	cRecEmail: string; // Correo electrónico del usuario
 	cRecDescripcion: string; // Descripción detallada del reclamo
 	cPerJuridica: string; // Filial o entidad jurídica relacionada
+	cPerApellido : string; // Apellido del usuario reclamante
 	cTipoReclamo: string; // Tipo de reclamo
 	cEstadoReclamo: string; // Estado actual del reclamo
 	cRecDireccion: string; // Dirección del usuario reclamante (si está disponible)
