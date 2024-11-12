@@ -15,13 +15,31 @@
     <div class="my-2 h-[1px] bg-gray-500"></div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
-       <app-c-select [label]="'Selecciona Filial'" [placeholder]="'Selecciona una Filial'"
-        [apiType]="'options'"></app-c-select>
+      <app-c-select
+        label="Seleccione una filial a derivar el reclamo"
+        placeholder="Filial"
+        [staticOptions]="[
+          { value: '6700000000', viewValue: 'UCV FILIAL CALLAO' },
+          { value: '1000003204', viewValue: 'UCV FILIAL CHICLAYO' },
+          { value: '1000147917', viewValue: 'UCV FILIAL CHIMBOTE' },
+          { value: '6500000000', viewValue: 'UCV FILIAL LIMA ESTE' },
+          { value: '1000095671', viewValue: 'UCV FILIAL LIMA NORTE' },
+          { value: '1000114557', viewValue: 'UCV FILIAL PIURA' },
+          { value: '1000136996', viewValue: 'UCV FILIAL TARAPOTO' },
+          { value: '1000098770', viewValue: 'UCV FILIAL TRUJILLO' },
+          { value: '6600000000', viewValue: 'UCV FILIAL ATE' },
+          { value: '6800000000', viewValue: 'UCV FILIAL HUARAZ' },
+          { value: '6900000000', viewValue: 'UCV FILIAL MOYOBAMBA' },
+          { value: '7100000000', viewValue: 'UCV FILIAL CHEPEN' },
+          { value: '7300000000', viewValue: 'UCV FILIAL VIRTUAL' }
+        ]">
+      </app-c-select>
+
       <app-c-select [label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'"
         [apiType]="'options'"></app-c-select>
       <app-c-select
-        [label]="'Unidad Organizacional'"
-        [placeholder]="'Selecciona una Unidad'"
+        [label]="'Area'"
+        [placeholder]="'Selecciona una Area'"
         [apiType]="'intranetUnidad'"
         [cPerJuridica]="data.cPerJuridica">
       </app-c-select>

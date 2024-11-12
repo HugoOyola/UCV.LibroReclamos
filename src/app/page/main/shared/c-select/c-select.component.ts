@@ -24,6 +24,7 @@ export class CSelectComponent implements OnInit, OnChanges {
   @Input() public id: string = '';
   @Input() public apiType: 'options' | 'sedes' | 'intranetUnidad' = 'options'; // Define el tipo de API a usar
   @Input() public cPerJuridica: string = ''; // Nuevo Input para cPerJuridica
+  @Input() public staticOptions: ComponentSelect[] = []; // Nuevo Input para opciones estáticas
   @Output() public selectedValueChange = new EventEmitter<string>(); // Nuevo Output para emitir el valor seleccionado
 
   public datosSelect: ComponentSelect[] = [];
@@ -45,7 +46,11 @@ export class CSelectComponent implements OnInit, OnChanges {
 
   // Método loadOptions actualizado para manejar el uso de código solo en 'sedes'
   private loadOptions(): void {
-    if (this.apiType === 'options') {
+    if (this.staticOptions.length > 0) {
+      // Si se han pasado opciones estáticas, usarlas directamente
+      this.datosSelect = this.staticOptions;
+      console.log('Datos cargados en datosSelect desde staticOptions:', this.datosSelect);
+    } else if (this.apiType === 'options') {
       this.selectService.getData('options').subscribe(
         (data) => {
           this.datosSelect = data;
