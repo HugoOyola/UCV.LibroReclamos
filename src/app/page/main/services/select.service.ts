@@ -12,10 +12,15 @@ interface ApiSedesResponse {
   lstItem: { cPerJuridica: string; cPerApellido: string }[];
 }
 
+interface ApiIntranetUnidadResponse {
+  lstItem: { nuniorgcodigo: number; cUniOrgNombre: string }[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class SelectService {
   private optionsApiUrl = 'http://localhost/Api_Calidad/api/ControlConfiguracion/Interfaces';
   private sedesApiUrl = 'http://localhost/Api_Calidad/api/ControlConfiguracion/Sedes';
+  private intranetUnidadApiUrl = 'http://localhost/Api_Calidad/api/ControlConfiguracion/IntranetUnidad';
 
   constructor(private http: HttpClient) {}
 
@@ -54,7 +59,25 @@ export class SelectService {
     );
   }
 
-  getData(apiType: 'options' | 'sedes', vcPerCodigo?: string): Observable<{ value: string; viewValue: string }[]> {
-    return apiType === 'options' ? this.getOptions() : this.getSedesOptions(vcPerCodigo || '');
+  getIntranetUnidadOptions(cPerJuridica: string): Observable<{ value: string; viewValue: string }[]> {
+    return this.http.post<ApiIntranetUnidadResponse>(this.intranetUnidadApiUrl, { cPerJuridica }).pipe(
+      map(response => response.lstItem.map(item => ({
+        value: item.nuniorgcodigo.toString(),
+        viewValue: item.cUniOrgNombre
+      })))
+    );
+  }
+
+  getData(apiType: 'options' | 'sedes' | 'intranetUnidad', param?: string): Observable<{ value: string; viewValue: string }[]> {
+    switch (apiType) {
+      case 'options':
+        return this.getOptions();
+      case 'sedes':
+        return this.getSedesOptions(param || '');
+      case 'intranetUnidad':
+        return this.getIntranetUnidadOptions(param || '');
+      default:
+        throw new Error(`API type ${apiType} is not supported`);
+    }
   }
 }

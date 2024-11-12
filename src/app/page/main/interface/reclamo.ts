@@ -11,6 +11,7 @@ export interface Reclamo {
 	cTipoReclamo: string; // Tipo de reclamo
 	cEstadoReclamo: string; // Estado actual del reclamo
 	cRecDireccion: string; // Dirección del usuario reclamante (si está disponible)
+	nUniOrgCodigo: string; // Código de la unidad organizativa
 	cRecCiudad: string; // Ciudad del usuario reclamante
 	cRecProvincia: string; // Provincia o región del usuario
 	cRecPais: string; // País del usuario reclamante

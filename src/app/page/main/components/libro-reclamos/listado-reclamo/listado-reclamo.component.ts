@@ -42,7 +42,6 @@ export class ListadoReclamoComponent implements OnChanges {
 
 
   @ViewChild(MatPaginator) public paginator!: MatPaginator;
-  @ViewChild('detalleReclamoTemplate') public detalleReclamoTemplate!: TemplateRef<any>;
 
   // ngAfterViewInit(): void {
   //   if (this.paginator) {

@@ -8,12 +8,23 @@
   <div mat-dialog-content class="mt-6">
     <!-- Contenido del modal -->
     <div class="flex flex-col">
-      <h2 class="text-xl font-semibold text-primary">ID del Reclamo: <span class="text-accent font-bold">{{ data.idreclamo }}</span></h2>
+      <h2 class="text-xl font-semibold text-primary">ID del Reclamo: <span class="text-accent font-bold">{{
+          data.idreclamo }}</span></h2>
       <p class="text-sm text-gray-500">Información detallada del reclamo seleccionado.</p>
     </div>
     <div class="my-2 h-[1px] bg-gray-500"></div>
-    <app-c-select	[label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'"	[apiType]="'options'"></app-c-select>
+
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+       <app-c-select [label]="'Selecciona Filial'" [placeholder]="'Selecciona una Filial'"
+        [apiType]="'options'"></app-c-select>
+      <app-c-select [label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'"
+        [apiType]="'options'"></app-c-select>
+      <app-c-select
+        [label]="'Unidad Organizacional'"
+        [placeholder]="'Selecciona una Unidad'"
+        [apiType]="'intranetUnidad'"
+        [cPerJuridica]="data.cPerJuridica">
+      </app-c-select>
       <div>
         <p class="text-primary font-bold">Nombre:</p>
         <p class="text-gray-600">{{ data.cRecNombre }}</p>
@@ -41,6 +52,7 @@
       <div>
         <p class="text-primary font-bold">Filial:</p>
         <p class="text-gray-600">{{ data.cPerApellido }}</p>
+        <p class="text-gray-600">{{ data.cPerJuridica }}</p>
       </div>
       <div>
         <p class="text-primary font-bold">Tipo de Reclamo:</p>

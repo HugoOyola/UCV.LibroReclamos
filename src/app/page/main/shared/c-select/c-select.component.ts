@@ -18,14 +18,16 @@ interface ComponentSelect {
   styleUrl: './c-select.component.scss'
 })
 export class CSelectComponent implements OnInit, OnChanges {
-   @Input() public codigo: string = '';
+  @Input() public codigo: string = '';
   @Input() public label: string = '';
   @Input() public placeholder: string = '';
   @Input() public id: string = '';
-  @Input() public apiType: 'options' | 'sedes' = 'options'; // Define el tipo de API a usar
+  @Input() public apiType: 'options' | 'sedes' | 'intranetUnidad' = 'options'; // Define el tipo de API a usar
+  @Input() public cPerJuridica: string = ''; // Nuevo Input para cPerJuridica
   @Output() public selectedValueChange = new EventEmitter<string>(); // Nuevo Output para emitir el valor seleccionado
 
   public datosSelect: ComponentSelect[] = [];
+  public selectedValue: string = ''; // Valor seleccionado para el select
 
   constructor(private selectService: SelectService) {}
 
@@ -36,14 +38,13 @@ export class CSelectComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     // Detectar cambios en codigo y cargar datos si ha cambiado
-    if (changes['codigo'] && changes['codigo'].currentValue) {
+    if (changes['codigo'] || changes['cPerJuridica'] || changes['selectedCodigo']) {
       this.loadOptions();
     }
   }
 
   // Método loadOptions actualizado para manejar el uso de código solo en 'sedes'
   private loadOptions(): void {
-    // Llama a la API de acuerdo a `apiType` y verifica si `codigo` es necesario
     if (this.apiType === 'options') {
       this.selectService.getData('options').subscribe(
         (data) => {
@@ -52,7 +53,7 @@ export class CSelectComponent implements OnInit, OnChanges {
         },
         (error) => {
           console.error('Error al cargar opciones de options:', error);
-          this.datosSelect = []; // En caso de error, vaciar la lista de opciones
+          this.datosSelect = [];
         }
       );
     } else if (this.apiType === 'sedes' && this.codigo) {
@@ -63,12 +64,23 @@ export class CSelectComponent implements OnInit, OnChanges {
         },
         (error) => {
           console.error('Error al cargar opciones de sedes:', error);
-          this.datosSelect = []; // En caso de error, vaciar la lista de opciones
+          this.datosSelect = [];
+        }
+      );
+    } else if (this.apiType === 'intranetUnidad' && this.cPerJuridica) {
+      this.selectService.getData('intranetUnidad', this.cPerJuridica).subscribe(
+        (data) => {
+          this.datosSelect = data;
+          console.log('Datos cargados en datosSelect para intranetUnidad:', this.datosSelect);
+        },
+        (error) => {
+          console.error('Error al cargar opciones de intranetUnidad:', error);
+          this.datosSelect = [];
         }
       );
     } else {
-      console.warn('No se puede cargar datos para sedes sin un código válido');
-      this.datosSelect = []; // Si no hay `codigo` en sedes, vaciar opciones
+      console.warn('No se puede cargar datos sin un valor válido para el tipo de API seleccionado');
+      this.datosSelect = [];
     }
   }
 
