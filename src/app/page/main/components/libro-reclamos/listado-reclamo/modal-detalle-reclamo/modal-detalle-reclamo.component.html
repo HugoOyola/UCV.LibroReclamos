@@ -1,0 +1,59 @@
+<div class="h-[75vh] w-[95vw] max-w-[700px] max-h-[500px] flex flex-col">
+  <div class="flex justify-between items-center bg-primary text-white p-0" mat-dialog-title>
+    <span class="text-base">Detalla del Reclamo</span>
+    <button mat-icon-button mat-dialog-close color="secondary" class="flex justify-center items-center p-2 text-white">
+      <mat-icon class="material-icons-round">close</mat-icon>
+    </button>
+  </div>
+  <div mat-dialog-content class="mt-6">
+    <!-- Contenido del modal -->
+    <div class="flex flex-col">
+      <h2 class="text-xl font-semibold text-primary">ID del Reclamo: <span class="text-accent font-bold">{{ data.idreclamo }}</span></h2>
+      <p class="text-sm text-gray-500">Información detallada del reclamo seleccionado.</p>
+    </div>
+    <div class="my-2 h-[1px] bg-gray-500"></div>
+    <app-c-select	[label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'"	[apiType]="'options'"></app-c-select>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+      <div>
+        <p class="text-primary font-bold">Nombre:</p>
+        <p class="text-gray-600">{{ data.cRecNombre }}</p>
+      </div>
+      <div>
+        <p class="text-primary font-bold">DNI:</p>
+        <p class="text-gray-600">{{ data.cRecDni }}</p>
+      </div>
+      <div>
+        <p class="text-primary font-bold">Fecha Registro:</p>
+        <p class="text-gray-600">{{ data.cRecFecha }}</p>
+      </div>
+      <div>
+        <p class="text-primary font-bold">Teléfono:</p>
+        <p class="text-gray-600">{{ data.cRecTelefono }}</p>
+      </div>
+      <div>
+        <p class="text-primary font-bold">Correo:</p>
+        <p class="text-gray-600">{{ data.cRecEmail }}</p>
+      </div>
+      <div class="sm:col-span-2">
+        <p class="text-primary font-bold">Descripción:</p>
+        <p class="text-gray-600">{{ data.cRecDescripcion }}</p>
+      </div>
+      <div>
+        <p class="text-primary font-bold">Filial:</p>
+        <p class="text-gray-600">{{ data.cPerApellido }}</p>
+      </div>
+      <div>
+        <p class="text-primary font-bold">Tipo de Reclamo:</p>
+        <p class="text-gray-600">{{ data.cTipoReclamo }}</p>
+      </div>
+      <div>
+        <p class="text-primary font-bold">Estado:</p>
+        <p class="text-gray-600">{{ data.cEstadoReclamo }}</p>
+      </div>
+    </div>
+  </div>
+  <!-- Línea horizontal antes del botón de cerrar -->
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="accent" cdkFocusInitial>Cerrar</button>
+  </div>
+</div>

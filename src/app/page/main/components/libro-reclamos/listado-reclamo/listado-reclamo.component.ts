@@ -7,8 +7,9 @@ import { PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
 import { ReclamoApiService } from '../../../services/reclamosdata.service';
 import { ReclamoData } from '../../../interface/reclamosdata';
+import { Reclamo } from '../../../interface/reclamo';
 import { MatDialog } from '@angular/material/dialog';
-import { CModalComponent, ModalData } from '../../../shared/c-modal/c-modal.component';
+import { ModalDetalleReclamoComponent } from './modal-detalle-reclamo/modal-detalle-reclamo.component';
 @Component({
   selector: 'app-listado-reclamo',
   standalone: true,
@@ -108,15 +109,10 @@ export class ListadoReclamoComponent implements OnChanges {
     window.open(url, '_blank');
   }
 
-  openDetalle(element: ReclamoData): void {
-    const data: ModalData = {
-      title: 'Detalle del Reclamo',
-      contentTemplate: this.detalleReclamoTemplate,
-      context: { data: element } // Proporciona el contexto para que `data` se refiera a `element`
-    };
-
-    this.dialog.open(CModalComponent, {
-      data
+  // Método para abrir el detalle de reclamo en un modal
+  openDetalle(element: Reclamo): void {
+    this.dialog.open(ModalDetalleReclamoComponent, {
+      data: element,
     });
   }
 

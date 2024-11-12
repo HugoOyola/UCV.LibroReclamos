@@ -18,7 +18,7 @@ interface ComponentSelect {
   styleUrl: './c-select.component.scss'
 })
 export class CSelectComponent implements OnInit, OnChanges {
-  @Input() public codigo: string = '';
+   @Input() public codigo: string = '';
   @Input() public label: string = '';
   @Input() public placeholder: string = '';
   @Input() public id: string = '';
@@ -41,19 +41,34 @@ export class CSelectComponent implements OnInit, OnChanges {
     }
   }
 
+  // Método loadOptions actualizado para manejar el uso de código solo en 'sedes'
   private loadOptions(): void {
-    // Llama a getData solo si codigo tiene un valor
-    if (this.codigo) {
-      this.selectService.getData(this.apiType, this.codigo).subscribe(
+    // Llama a la API de acuerdo a `apiType` y verifica si `codigo` es necesario
+    if (this.apiType === 'options') {
+      this.selectService.getData('options').subscribe(
         (data) => {
           this.datosSelect = data;
+          console.log('Datos cargados en datosSelect para options:', this.datosSelect);
         },
-        () => {
+        (error) => {
+          console.error('Error al cargar opciones de options:', error);
+          this.datosSelect = []; // En caso de error, vaciar la lista de opciones
+        }
+      );
+    } else if (this.apiType === 'sedes' && this.codigo) {
+      this.selectService.getData('sedes', this.codigo).subscribe(
+        (data) => {
+          this.datosSelect = data;
+          console.log('Datos cargados en datosSelect para sedes:', this.datosSelect);
+        },
+        (error) => {
+          console.error('Error al cargar opciones de sedes:', error);
           this.datosSelect = []; // En caso de error, vaciar la lista de opciones
         }
       );
     } else {
-      this.datosSelect = []; // Vaciar si codigo es vacío o nulo
+      console.warn('No se puede cargar datos para sedes sin un código válido');
+      this.datosSelect = []; // Si no hay `codigo` en sedes, vaciar opciones
     }
   }
 
