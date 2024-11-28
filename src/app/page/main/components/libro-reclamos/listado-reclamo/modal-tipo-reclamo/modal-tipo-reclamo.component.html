@@ -1,0 +1,80 @@
+<div class="h-[75vh] w-[95vw] max-w-[700px] max-h-[500px] flex flex-col">
+  <div class="flex justify-between items-center bg-primary text-white p-0" mat-dialog-title>
+    <span class="text-base">Cambiar Tipo de Reclamo</span>
+    <button mat-icon-button mat-dialog-close color="secondary" class="flex justify-center items-center p-2 text-white">
+      <mat-icon class="material-icons-round">close</mat-icon>
+    </button>
+  </div>
+  <!-- Contenido del Modal -->
+  <div mat-dialog-content class="flex-1 overflow-y-auto p-6">
+    <!-- Descripción -->
+    <div class="mb-4">
+      <h2 class="text-base font-semibold text-primary">Tipo de Reclamo</h2>
+      <p class="text-sm text-gray-500">
+        Actualmente, el tipo de reclamo es <span class="font-medium text-primary">Queja</span>. Puedes cambiarlo seleccionando una de las siguientes opciones:
+      </p>
+    </div>
+
+    <!-- Separador -->
+    <div class="my-4 h-[1px] bg-gray-300"></div>
+
+    <div class="p-6 space-y-6">
+      <!-- Opciones de Tipo de Reclamo -->
+      <form class="space-y-4">
+        <!-- Reclamo -->
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input
+            type="radio"
+            name="tipoReclamo"
+            value="Reclamo"
+            class="form-radio h-5 w-5 text-primary focus:ring-primary"
+          />
+          <span class="text-gray-700">Reclamo</span>
+        </label>
+
+        <!-- Queja -->
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input
+            type="radio"
+            name="tipoReclamo"
+            value="Queja"
+            checked
+            class="form-radio h-5 w-5 text-primary focus:ring-primary"
+          />
+          <span class="text-gray-700">Queja</span>
+        </label>
+
+        <!-- Consulta/Sugerencia -->
+        <label class="flex items-center space-x-3 cursor-pointer">
+          <input
+            type="radio"
+            name="tipoReclamo"
+            value="Consulta/Sugerencia"
+            class="form-radio h-5 w-5 text-primary focus:ring-primary"
+          />
+          <span class="text-gray-700">Consulta/Sugerencia</span>
+        </label>
+      </form>
+
+      <!-- Bitácora -->
+      <div class="mt-6 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+        <h3 class="text-lg font-semibold text-gray-800">Bitácora</h3>
+        <ul class="mt-2 space-y-2">
+          <!-- Registro inicial -->
+          <li class="text-sm text-gray-600">
+            <span class="font-medium text-primary">Inicial:</span> Queja
+          </li>
+          <!-- Registro de cambio (ejemplo dinámico) -->
+          <li class="text-sm text-gray-600">
+            <span class="font-medium text-primary">Actual:</span> -
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+  <!-- Línea horizontal antes del botón de cerrar -->
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="accent" cdkFocusInitial>Cerrar</button>
+  </div>
+</div>

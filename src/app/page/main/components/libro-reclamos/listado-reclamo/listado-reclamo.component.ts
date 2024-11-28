@@ -11,6 +11,8 @@ import { Reclamo } from '../../../interface/reclamo';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalDetalleReclamoComponent } from './modal-detalle-reclamo/modal-detalle-reclamo.component';
 import { ModalHistorialReclamoComponent } from './modal-historial-reclamo/modal-historial-reclamo.component';
+import { ModalTipoReclamoComponent } from './modal-tipo-reclamo/modal-tipo-reclamo.component';
+import { ModalDerivarReclamoComponent } from './modal-derivar-reclamo/modal-derivar-reclamo.component';
 @Component({
   selector: 'app-listado-reclamo',
   standalone: true,
@@ -116,9 +118,20 @@ export class ListadoReclamoComponent implements OnChanges {
     });
   }
 
-
   openHistorial(element: ReclamoData): void {
     this.dialog.open(ModalHistorialReclamoComponent, {
+      data: element,
+    });
+  }
+
+  openTipoReclamo(element: ReclamoData): void {
+    this.dialog.open(ModalTipoReclamoComponent, {
+      data: element,
+    });
+  }
+
+  openDerivar(element: ReclamoData): void {
+    this.dialog.open(ModalDerivarReclamoComponent, {
       data: element,
     });
   }

@@ -69,7 +69,7 @@
       <ng-container matColumnDef="arch">
         <th mat-header-cell *matHeaderCellDef
           class="px-4 py-3 text-center font-bold text-white bg-primary border-b border-gray-300">Arch.</th>
-        <td mat-cell *matCellDef="let element" class="px-4 py-2 border-r border-gray-200 text-center">
+        <td mat-cell *matCellDef="let element" class="px-4 py-2 border-r border-gray-200 text-center cursor-pointer">
           <button *ngIf="element.cGoogleDriveId" (click)="downloadFile(element.cGoogleDriveId)"
             class="text-blue-500 underline">
             <mat-icon class="material-icons-round text-blue-500">attach_file</mat-icon>
@@ -81,8 +81,8 @@
       <ng-container matColumnDef="tipo">
         <th mat-header-cell *matHeaderCellDef
           class="px-4 py-3 text-center font-bold text-white bg-primary border-b border-gray-300">Tipo Reclamo</th>
-        <td mat-cell *matCellDef="let element" class="px-4 py-2 border-r border-gray-200 text-center">
-          <mat-icon class="material-icons-round text-yellow-500">description</mat-icon>
+        <td mat-cell *matCellDef="let element" class="px-4 py-2 border-r border-gray-200 text-center cursor-pointer">
+          <mat-icon class="material-icons-round text-yellow-500" (click)="openTipoReclamo(element)">description</mat-icon>
         </td>
       </ng-container>
 
@@ -90,8 +90,8 @@
       <ng-container matColumnDef="reenviar">
         <th mat-header-cell *matHeaderCellDef
           class="px-4 py-3 text-center font-bold text-white bg-primary border-b border-gray-300">Derivar</th>
-        <td mat-cell *matCellDef="let element" class="px-4 py-2 border-r border-gray-200 text-center">
-          <mat-icon class="material-icons-round text-green-500">sync_alt</mat-icon>
+        <td mat-cell *matCellDef="let element" class="px-4 py-2 border-r border-gray-200 text-center cursor-pointer">
+          <mat-icon class="material-icons-round text-green-500" (click)="openDerivar(element)">sync_alt</mat-icon>
         </td>
       </ng-container>
 
