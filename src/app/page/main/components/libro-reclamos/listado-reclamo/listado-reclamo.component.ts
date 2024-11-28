@@ -10,6 +10,7 @@ import { ReclamoData } from '../../../interface/reclamosdata';
 import { Reclamo } from '../../../interface/reclamo';
 import { MatDialog } from '@angular/material/dialog';
 import { ModalDetalleReclamoComponent } from './modal-detalle-reclamo/modal-detalle-reclamo.component';
+import { ModalHistorialReclamoComponent } from './modal-historial-reclamo/modal-historial-reclamo.component';
 @Component({
   selector: 'app-listado-reclamo',
   standalone: true,
@@ -117,6 +118,8 @@ export class ListadoReclamoComponent implements OnChanges {
 
 
   openHistorial(element: ReclamoData): void {
-    console.log('Opening history for:', element);
+    this.dialog.open(ModalHistorialReclamoComponent, {
+      data: element,
+    });
   }
 }

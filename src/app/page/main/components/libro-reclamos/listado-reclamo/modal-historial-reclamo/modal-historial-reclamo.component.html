@@ -1,0 +1,98 @@
+<div class="h-[75vh] w-[95vw] max-w-[700px] max-h-[500px] flex flex-col">
+  <div class="flex justify-between items-center bg-primary text-white p-0" mat-dialog-title>
+    <span class="text-base">Historial: Trámite del Reclamo</span>
+    <button mat-icon-button mat-dialog-close color="secondary" class="flex justify-center items-center p-2 text-white">
+      <mat-icon class="material-icons-round">close</mat-icon>
+    </button>
+  </div>
+  <!-- Contenido del Modal -->
+  <div mat-dialog-content class="flex-1 overflow-y-auto p-6">
+    <!-- Descripción -->
+    <div class="mb-4">
+      <h2 class="text-base font-semibold text-primary">Seguimiento del Reclamo:</h2>
+      <p class="text-sm text-gray-500">
+        A continuación, puedes revisar el progreso y estado actual del trámite.
+      </p>
+    </div>
+
+    <!-- Separador -->
+    <div class="my-4 h-[1px] bg-gray-300"></div>
+
+    <!-- Línea de Tiempo -->
+    <div class="relative border-l-4 border-gray-300 pl-6">
+      <!-- Paso 1: Recepción -->
+      <div class="mb-6 flex items-start">
+        <div class="bg-blue-500 text-white w-8 h-8 flex items-center justify-center rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-blue-600">Recepción</h3>
+          <p class="text-sm text-gray-600">Fecha: 01/10/2024</p>
+          <p class="text-sm text-gray-600">El trámite fue recibido en la oficina de recepción.</p>
+        </div>
+      </div>
+
+      <!-- Paso 2: Revisión Administrativa -->
+      <div class="mb-6 flex items-start">
+        <div class="bg-green-500 text-white w-8 h-8 flex items-center justify-center rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-green-600">Revisión Administrativa</h3>
+          <p class="text-sm text-gray-600">Fecha: 02/10/2024</p>
+          <p class="text-sm text-gray-600">El trámite fue revisado por el departamento administrativo.</p>
+        </div>
+      </div>
+
+      <!-- Paso 3: Área Jurídica -->
+      <div class="mb-6 flex items-start">
+        <div class="bg-yellow-500 text-white w-8 h-8 flex items-center justify-center rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-yellow-600">Área Jurídica</h3>
+          <p class="text-sm text-gray-600">Fecha: En Proceso</p>
+          <p class="text-sm text-gray-600">El trámite está en revisión en el área jurídica.</p>
+        </div>
+      </div>
+
+      <!-- Paso 4: Trámite Rechazado -->
+      <div class="mb-6 flex items-start">
+        <div class="bg-red-500 text-white w-8 h-8 flex items-center justify-center rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-red-600">Trámite Rechazado</h3>
+          <p class="text-sm text-gray-600">Fecha: 03/10/2024</p>
+          <p class="text-sm text-gray-600">El trámite ha sido rechazado por el área correspondiente.</p>
+        </div>
+      </div>
+
+      <!-- Paso 5: Aprobación Final -->
+      <div class="flex items-start">
+        <div class="bg-gray-400 text-white w-8 h-8 flex items-center justify-center rounded-full">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3" />
+          </svg>
+        </div>
+        <div class="ml-4">
+          <h3 class="text-lg font-semibold text-gray-600">Aprobación Final</h3>
+          <p class="text-sm text-gray-600">Pendiente</p>
+          <p class="text-sm text-gray-600">Esperando aprobación final del trámite.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Línea horizontal antes del botón de cerrar -->
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close color="accent" cdkFocusInitial>Cerrar</button>
+  </div>
+</div>
