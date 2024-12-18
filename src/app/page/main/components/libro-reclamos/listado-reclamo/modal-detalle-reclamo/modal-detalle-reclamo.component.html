@@ -1,89 +1,104 @@
-<div class="h-[75vh] w-[95vw] max-w-[700px] max-h-[500px] flex flex-col">
+<div class="h-[75vh] w-[98vw] max-w-[1100px] max-h-[700px] flex flex-col">
   <div class="flex justify-between items-center bg-primary text-white p-0" mat-dialog-title>
-    <span class="text-base">Detalla del Reclamo</span>
+    <span class="text-base">Detalle del Reclamo</span>
     <button mat-icon-button mat-dialog-close color="secondary" class="flex justify-center items-center p-2 text-white">
       <mat-icon class="material-icons-round">close</mat-icon>
     </button>
   </div>
-  <div mat-dialog-content class="mt-6">
-    <!-- Contenido del modal -->
-    <div class="flex flex-col">
-      <h2 class="text-xl font-semibold text-primary">ID del Reclamo: <span class="text-accent font-bold">{{
-          data.idreclamo }}</span></h2>
-      <p class="text-sm text-gray-500">Información detallada del reclamo seleccionado.</p>
+  <div mat-dialog-content class="mt-6 flex flex-row gap-4">
+    <!-- Sección principal -->
+    <div class="flex flex-col flex-1">
+      <div class="flex flex-col">
+        <h2 class="text-xl font-semibold text-primary">
+          ID del Reclamo: <span class="text-accent font-bold">{{ data.idreclamo }}</span>
+        </h2>
+        <p class="text-sm text-gray-500">Información detallada del reclamo seleccionado.</p>
+        <div class="my-2 h-[1px] bg-gray-500"></div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
+        <app-c-select
+          label="Seleccione una filial a derivar el reclamo"
+          placeholder="Filial"
+          [staticOptions]="[
+            { value: '6700000000', viewValue: 'UCV FILIAL CALLAO' },
+            { value: '1000003204', viewValue: 'UCV FILIAL CHICLAYO' },
+            { value: '1000147917', viewValue: 'UCV FILIAL CHIMBOTE' },
+            { value: '6500000000', viewValue: 'UCV FILIAL LIMA ESTE' },
+            { value: '1000095671', viewValue: 'UCV FILIAL LIMA NORTE' },
+            { value: '1000114557', viewValue: 'UCV FILIAL PIURA' },
+            { value: '1000136996', viewValue: 'UCV FILIAL TARAPOTO' },
+            { value: '1000098770', viewValue: 'UCV FILIAL TRUJILLO' },
+            { value: '6600000000', viewValue: 'UCV FILIAL ATE' },
+            { value: '6800000000', viewValue: 'UCV FILIAL HUARAZ' },
+            { value: '6900000000', viewValue: 'UCV FILIAL MOYOBAMBA' },
+            { value: '7100000000', viewValue: 'UCV FILIAL CHEPEN' },
+            { value: '7300000000', viewValue: 'UCV FILIAL VIRTUAL' }
+          ]">
+        </app-c-select>
+
+        <app-c-select [label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'" [apiType]="'options'"></app-c-select>
+        <app-c-select class="sm:col-span-2"
+          [label]="'Area'"
+          [placeholder]="'Selecciona una Area'"
+          [apiType]="'intranetUnidad'"
+          [cPerJuridica]="data.cPerJuridica">
+        </app-c-select>
+        <div>
+          <p class="text-primary font-bold">Nombre:</p>
+          <p class="text-gray-600">{{ data.cRecNombre }}</p>
+        </div>
+        <div>
+          <p class="text-primary font-bold">DNI:</p>
+          <p class="text-gray-600">{{ data.cRecDni }}</p>
+        </div>
+        <div>
+          <p class="text-primary font-bold">Fecha Registro:</p>
+          <p class="text-gray-600">{{ data.cRecFecha }}</p>
+        </div>
+        <div>
+          <p class="text-primary font-bold">Teléfono:</p>
+          <p class="text-gray-600">{{ data.cRecTelefono }}</p>
+        </div>
+        <div>
+          <p class="text-primary font-bold">Correo:</p>
+          <p class="text-gray-600">{{ data.cRecEmail }}</p>
+        </div>
+        <div class="sm:col-span-2">
+          <p class="text-primary font-bold">Descripción:</p>
+          <p class="text-gray-600">{{ data.cRecDescripcion }}</p>
+        </div>
+        <div>
+          <p class="text-primary font-bold">Filial:</p>
+          <p class="text-gray-600">{{ data.cPerApellido }}</p>
+        </div>
+        <div>
+          <p class="text-primary font-bold">Tipo de Reclamo:</p>
+          <p class="text-gray-600">{{ data.cTipoReclamo }}</p>
+        </div>
+        <div>
+          <p class="text-primary font-bold">Estado:</p>
+          <p class="text-gray-600">{{ data.cEstadoReclamo }}</p>
+        </div>
+      </div>
     </div>
-    <div class="my-2 h-[1px] bg-gray-500"></div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
-      <app-c-select
-        label="Seleccione una filial a derivar el reclamo"
-        placeholder="Filial"
-        [staticOptions]="[
-          { value: '6700000000', viewValue: 'UCV FILIAL CALLAO' },
-          { value: '1000003204', viewValue: 'UCV FILIAL CHICLAYO' },
-          { value: '1000147917', viewValue: 'UCV FILIAL CHIMBOTE' },
-          { value: '6500000000', viewValue: 'UCV FILIAL LIMA ESTE' },
-          { value: '1000095671', viewValue: 'UCV FILIAL LIMA NORTE' },
-          { value: '1000114557', viewValue: 'UCV FILIAL PIURA' },
-          { value: '1000136996', viewValue: 'UCV FILIAL TARAPOTO' },
-          { value: '1000098770', viewValue: 'UCV FILIAL TRUJILLO' },
-          { value: '6600000000', viewValue: 'UCV FILIAL ATE' },
-          { value: '6800000000', viewValue: 'UCV FILIAL HUARAZ' },
-          { value: '6900000000', viewValue: 'UCV FILIAL MOYOBAMBA' },
-          { value: '7100000000', viewValue: 'UCV FILIAL CHEPEN' },
-          { value: '7300000000', viewValue: 'UCV FILIAL VIRTUAL' }
-        ]">
-      </app-c-select>
-
-      <app-c-select [label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'"
-        [apiType]="'options'"></app-c-select>
-      <app-c-select
-        [label]="'Area'"
-        [placeholder]="'Selecciona una Area'"
-        [apiType]="'intranetUnidad'"
-        [cPerJuridica]="data.cPerJuridica">
-      </app-c-select>
-      <div>
-        <p class="text-primary font-bold">Nombre:</p>
-        <p class="text-gray-600">{{ data.cRecNombre }}</p>
-      </div>
-      <div>
-        <p class="text-primary font-bold">DNI:</p>
-        <p class="text-gray-600">{{ data.cRecDni }}</p>
-      </div>
-      <div>
-        <p class="text-primary font-bold">Fecha Registro:</p>
-        <p class="text-gray-600">{{ data.cRecFecha }}</p>
-      </div>
-      <div>
-        <p class="text-primary font-bold">Teléfono:</p>
-        <p class="text-gray-600">{{ data.cRecTelefono }}</p>
-      </div>
-      <div>
-        <p class="text-primary font-bold">Correo:</p>
-        <p class="text-gray-600">{{ data.cRecEmail }}</p>
-      </div>
-      <div class="sm:col-span-2">
-        <p class="text-primary font-bold">Descripción:</p>
-        <p class="text-gray-600">{{ data.cRecDescripcion }}</p>
-      </div>
-      <div>
-        <p class="text-primary font-bold">Filial:</p>
-        <p class="text-gray-600">{{ data.cPerApellido }}</p>
-        <p class="text-gray-600">{{ data.cPerJuridica }}</p>
-      </div>
-      <div>
-        <p class="text-primary font-bold">Tipo de Reclamo:</p>
-        <p class="text-gray-600">{{ data.cTipoReclamo }}</p>
-      </div>
-      <div>
-        <p class="text-primary font-bold">Estado:</p>
-        <p class="text-gray-600">{{ data.cEstadoReclamo }}</p>
-      </div>
+    <!-- Sección de Bitácora -->
+    <div class="flex flex-col w-1/3 bg-gray-100 p-4 rounded-lg">
+      <h3 class="text-lg font-bold text-primary">Bitácora</h3>
+      <p class="text-sm text-gray-500 mb-4">Campus actual: <span class="font-semibold">Campus Actual</span></p>
     </div>
   </div>
+
   <!-- Línea horizontal antes del botón de cerrar -->
-  <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close color="accent" cdkFocusInitial>Cerrar</button>
+  <div mat-dialog-actions align="end" class="my-3 mx-2">
+    <button mat-button color="primary" class="bg-primary text-white border border-primary rounded-md px-4 py-2 hover:bg-blue-900 hover:border-blue-900">
+      <mat-icon class="material-icons-round text-white">save</mat-icon>
+      Guardar
+    </button>
+    <button mat-button mat-dialog-close color="accent" class="bg-accent text-white border border-accent rounded-md px-4 py-2 hover:bg-red-900 hover:border-red-900">
+      <mat-icon class="material-icons-round text-white">close</mat-icon>
+      Cerrar
+    </button>
   </div>
 </div>
