@@ -36,16 +36,8 @@
       <!-- Select para Cambio -->
       <div>
         <label for="newCampus" class="block text-sm font-medium text-gray-700">Derivar a</label>
-        <select
-          id="newCampus"
-          name="newCampus"
-          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
-        >
-          <option value="" disabled selected>Seleccionar campus</option>
-          <option value="Piura">Piura</option>
-          <option value="Trujillo">Trujillo</option>
-          <option value="Lima">Lima</option>
-        </select>
+        <app-c-select [codigo]="codigo" [label]="'Campus'" [placeholder]="'Selecciona un Campus'"
+        [apiType]="'sedes'" (selectedValueChange)="onCampusSelected($event)"></app-c-select>
       </div>
     </div>
 
@@ -67,6 +59,13 @@
   </div>
   <!-- Línea horizontal antes del botón de cerrar -->
   <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close color="accent" cdkFocusInitial>Cerrar</button>
+    <button mat-button color="primary" class="bg-primary text-white border border-primary rounded-md px-4 py-2 hover:bg-blue-900 hover:border-blue-900">
+      <mat-icon class="material-icons-round text-white">save</mat-icon>
+      Guardar
+    </button>
+    <button mat-button mat-dialog-close color="accent" class="bg-accent text-white border border-accent rounded-md px-4 py-2 hover:bg-red-900 hover:border-red-900">
+      <mat-icon class="material-icons-round text-white">close</mat-icon>
+      Cerrar
+    </button>
   </div>
 </div>

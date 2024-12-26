@@ -75,6 +75,13 @@
   </div>
   <!-- Línea horizontal antes del botón de cerrar -->
   <div mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close color="accent" cdkFocusInitial>Cerrar</button>
+    <button mat-button color="primary" class="bg-primary text-white border border-primary rounded-md px-4 py-2 hover:bg-blue-900 hover:border-blue-900">
+      <mat-icon class="material-icons-round text-white">save</mat-icon>
+      Guardar
+    </button>
+    <button mat-button mat-dialog-close color="accent" class="bg-accent text-white border border-accent rounded-md px-4 py-2 hover:bg-red-900 hover:border-red-900">
+      <mat-icon class="material-icons-round text-white">close</mat-icon>
+      Cerrar
+    </button>
   </div>
 </div>
