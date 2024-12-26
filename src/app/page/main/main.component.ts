@@ -43,7 +43,8 @@ export class MainComponent {
 				console.log(' =>', cPerCodigoSignal);
 				this._authService.ReloadToken().subscribe({
 					complete: () => {
-						this.post_Principal_ObtenerDatosPersonales();
+						// Se comento por el error que mostraba
+						// this.post_Principal_ObtenerDatosPersonales();
 					},
 				});
 			}
