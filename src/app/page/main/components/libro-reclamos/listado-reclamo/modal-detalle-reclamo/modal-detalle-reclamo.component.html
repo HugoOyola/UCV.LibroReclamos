@@ -20,6 +20,7 @@
         <app-c-select
           label="Seleccione una filial a derivar el reclamo"
           placeholder="Filial"
+          [selected]="data.cPerJuridica"
           [staticOptions]="[
             { value: '6700000000', viewValue: 'UCV FILIAL CALLAO' },
             { value: '1000003204', viewValue: 'UCV FILIAL CHICLAYO' },
@@ -71,6 +72,7 @@
         <div>
           <p class="text-primary font-bold">Filial:</p>
           <p class="text-gray-600">{{ data.cPerApellido }}</p>
+          <p class="text-gray-600">{{ data.cPerJuridica }}</p>
         </div>
         <div>
           <p class="text-primary font-bold">Tipo de Reclamo:</p>
@@ -80,6 +82,9 @@
           <p class="text-primary font-bold">Estado:</p>
           <p class="text-gray-600">{{ data.cEstadoReclamo }}</p>
         </div>
+      </div>
+      <div>
+        Ritch text
       </div>
     </div>
 

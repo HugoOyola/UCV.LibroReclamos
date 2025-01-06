@@ -25,6 +25,7 @@ export class CSelectComponent implements OnInit, OnChanges {
   @Input() public apiType: 'options' | 'sedes' | 'intranetUnidad' = 'options'; // Define el tipo de API a usar
   @Input() public cPerJuridica: string = ''; // Nuevo Input para cPerJuridica
   @Input() public staticOptions: ComponentSelect[] = []; // Nuevo Input para opciones estáticas
+  @Input() public selected: string = '';
   @Output() public selectedValueChange = new EventEmitter<string>(); // Nuevo Output para emitir el valor seleccionado
 
   public datosSelect: ComponentSelect[] = [];
@@ -35,6 +36,9 @@ export class CSelectComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     // Cargar opciones iniciales en caso de que ya exista un código
     this.loadOptions();
+    if (this.selected) {
+      this.selectedValue = this.selected;
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -90,6 +94,7 @@ export class CSelectComponent implements OnInit, OnChanges {
   }
 
   onOptionSelected(value: string): void {
-    this.selectedValueChange.emit(value); // Emitir el valor seleccionado
+    this.selectedValue = value;
+    this.selectedValueChange.emit(value);
   }
 }

@@ -15,6 +15,7 @@ export interface Reclamo {
 	cRecCiudad: string; // Ciudad del usuario reclamante
 	cRecProvincia: string; // Provincia o región del usuario
 	cRecPais: string; // País del usuario reclamante
+	nArea: string; // Área o departamento relacionado con el reclamo
 	fechaActualizacion: string; // Fecha de la última actualización del reclamo
 	usuarioAsignado: string; // Usuario asignado al reclamo
 	prioridad: string; // Nivel de prioridad del reclamo

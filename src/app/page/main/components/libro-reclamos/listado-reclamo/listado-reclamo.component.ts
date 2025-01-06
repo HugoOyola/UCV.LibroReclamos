@@ -74,7 +74,7 @@ export class ListadoReclamoComponent implements OnChanges {
       idReclamo: "0",
       cpercodigo: this.codigo,
       cPerJuridica: this.filtros.campus || "0",
-      dFechaInicio: this.filtros.startDate ? this.filtros.startDate.toLocaleDateString('en-CA') : "2024-10-01",
+      dFechaInicio: this.filtros.startDate ? this.filtros.startDate.toLocaleDateString('en-CA') : "2025-02-01",
       dFechaFin: this.filtros.endDate ? this.filtros.endDate.toLocaleDateString('en-CA') : today,
       cTipoReclamo: this.filtros.tipoReclamo || "30",
       cEstadoReclamo: "0",
