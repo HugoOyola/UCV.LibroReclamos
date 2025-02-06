@@ -26,4 +26,6 @@ export interface Reclamo {
 		estado: string;
 		usuario: string;
 	};
+	cRichTextContent: string; // Contenido enriquecido del reclamo
+	nTipReclamo: string; // Código del tipo de reclamo
 }

@@ -5,11 +5,12 @@ import { MatButton } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Reclamo } from '../../../../interface/reclamo';
 import { CSelectComponent } from 'src/app/page/main/shared/c-select/c-select.component';
+import { CEditorComponent } from 'src/app/page/main/shared/c-editor/c-editor.component';
 
 @Component({
   selector: 'app-modal-detalle-reclamo',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, CSelectComponent, MatIconModule, MatButton, MatDialogActions],
+  imports: [CommonModule, MatDialogModule, CSelectComponent, MatIconModule, MatButton, MatDialogActions, CEditorComponent],
   templateUrl: './modal-detalle-reclamo.component.html',
   styleUrl: './modal-detalle-reclamo.component.scss',
   schemas: [CUSTOM_ELEMENTS_SCHEMA]

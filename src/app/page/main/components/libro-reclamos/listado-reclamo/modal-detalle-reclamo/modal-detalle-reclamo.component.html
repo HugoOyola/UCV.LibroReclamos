@@ -37,8 +37,7 @@
             { value: '7300000000', viewValue: 'UCV FILIAL VIRTUAL' }
           ]">
         </app-c-select>
-
-        <app-c-select [label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'" [apiType]="'options'"></app-c-select>
+        <app-c-select [label]="'Tipo Reclamo'" [placeholder]="'Selecciona un Tipo de Reclamo'" [apiType]="'options'" [selected]="data.nTipReclamo"></app-c-select>
         <app-c-select class="sm:col-span-2"
           [label]="'Area'"
           [placeholder]="'Selecciona una Area'"
@@ -72,19 +71,20 @@
         <div>
           <p class="text-primary font-bold">Filial:</p>
           <p class="text-gray-600">{{ data.cPerApellido }}</p>
-          <p class="text-gray-600">{{ data.cPerJuridica }}</p>
+          <!-- <p class="text-gray-600">{{ data.cPerJuridica }}</p> -->
         </div>
         <div>
           <p class="text-primary font-bold">Tipo de Reclamo:</p>
           <p class="text-gray-600">{{ data.cTipoReclamo }}</p>
         </div>
-        <div>
+        <!-- <div>
           <p class="text-primary font-bold">Estado:</p>
-          <p class="text-gray-600">{{ data.cEstadoReclamo }}</p>
+          <p class="text-gray-600">{{ data.cTipoReclamo }}</p>
+        </div> -->
+        <div class="sm:col-span-2">
+          <p class="text-primary font-bold">Respuesta:</p>
+          <app-c-editor [(content)]="data.cRichTextContent"></app-c-editor>
         </div>
-      </div>
-      <div>
-        Ritch text
       </div>
     </div>
 

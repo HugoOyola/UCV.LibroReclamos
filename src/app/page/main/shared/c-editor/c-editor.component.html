@@ -1,1 +1,12 @@
-<p>c-editor works!</p>
+<div class="editor-container">
+  <div class="toolbar">
+    <button type="button" (click)="applyTag('b')">Bold</button>
+    <button type="button" (click)="applyTag('i')">Italic</button>
+  </div>
+  <textarea
+    [(ngModel)]="content"
+    (ngModelChange)="onContentChange()"
+    class="editor-textarea"
+    placeholder="Escribe aquí..."
+  ></textarea>
+</div>
